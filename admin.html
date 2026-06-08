@@ -11,74 +11,48 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #f7f5f1;
-      --surface:    #ffffff;
-      --ink:        #1a1a18;
-      --ink-soft:   #6b6860;
-      --accent:     #b07d4f;
+      --bg:           #f7f5f1;
+      --surface:      #ffffff;
+      --ink:          #1a1a18;
+      --ink-soft:     #6b6860;
+      --accent:       #b07d4f;
       --accent-light: #e8ddd3;
-      --border:     #e0dbd4;
-      --radius:     4px;
-      --trans:      0.25s ease;
-      --header-h:   56px;
+      --border:       #e0dbd4;
+      --radius:       4px;
+      --trans:        0.25s ease;
+      --header-h:     56px;
     }
 
     html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; }
 
     /* ── Login ── */
-    .login-stage {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1rem;
-    }
+    .login-stage { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
     .login-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 3rem 2.5rem;
-      width: 100%; max-width: 380px;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
-      animation: fadeUp 0.45s ease both;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 2px;
+      padding: 3rem 2.5rem; width: 100%; max-width: 380px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06); animation: fadeUp 0.45s ease both;
     }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(14px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .eyebrow {
-      font-size: 0.68rem; font-weight: 500;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 0.5rem;
-    }
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 300; margin-bottom: 1.8rem;
-    }
-    label {
-      display: block;
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink-soft); margin-bottom: 0.35rem;
-    }
-    input[type="password"], input[type="text"], input[type="email"], input[type="tel"], textarea {
+    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+    .eyebrow { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 1.8rem; }
+
+    label { display: block; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.35rem; }
+
+    input[type="password"], input[type="text"], input[type="email"], input[type="tel"], textarea, select {
       width: 100%; padding: 0.65rem 0.85rem;
       border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--bg);
-      font-family: 'Jost', sans-serif; font-size: 0.92rem; font-weight: 300;
-      color: var(--ink); outline: none;
+      background: var(--bg); font-family: 'Jost', sans-serif;
+      font-size: 0.92rem; font-weight: 300; color: var(--ink); outline: none;
       transition: border-color var(--trans), box-shadow var(--trans);
     }
-    input:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(176,125,79,0.12);
-    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,79,0.12); }
+
     .btn-primary {
-      display: block; width: 100%; margin-top: 1.4rem;
-      padding: 0.8rem;
-      background: var(--ink); color: #fff; border: none;
-      border-radius: var(--radius);
-      font-family: 'Jost', sans-serif; font-size: 0.78rem;
-      font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
-      cursor: pointer;
+      display: block; width: 100%; margin-top: 1.4rem; padding: 0.8rem;
+      background: var(--ink); color: #fff; border: none; border-radius: var(--radius);
+      font-family: 'Jost', sans-serif; font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
       transition: background var(--trans), transform 0.15s ease;
     }
     .btn-primary:hover { background: #2d2d2a; transform: translateY(-1px); }
@@ -88,31 +62,20 @@
     #app { display: none; flex-direction: column; min-height: 100vh; }
 
     .topbar {
-      height: var(--header-h);
-      background: var(--ink); color: #fff;
+      height: var(--header-h); background: var(--ink); color: #fff;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem;
-      position: sticky; top: 0; z-index: 100;
+      padding: 0 1.5rem; position: sticky; top: 0; z-index: 100;
     }
     .topbar-left { display: flex; align-items: center; gap: 0.8rem; }
-    .topbar-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem; font-weight: 300; letter-spacing: 0.04em;
-    }
-    .topbar-badge {
-      background: var(--accent); color: #fff;
-      font-size: 0.7rem; font-weight: 500;
-      padding: 0.15rem 0.5rem; border-radius: 20px;
-    }
+    .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 300; letter-spacing: 0.04em; }
+    .topbar-badge { background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 20px; }
     .topbar-actions { display: flex; gap: 0.6rem; }
     .icon-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff; border-radius: var(--radius);
-      padding: 0.45rem 0.9rem;
-      font-family: 'Jost', sans-serif; font-size: 0.75rem;
-      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; border-radius: var(--radius); padding: 0.45rem 0.9rem;
+      font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
       transition: background var(--trans);
     }
     .icon-btn:hover { background: rgba(255,255,255,0.18); }
@@ -120,30 +83,56 @@
     .main { flex: 1; padding: 1.5rem; overflow-x: auto; }
 
     /* ── Stats bar ── */
-    .stats-bar {
-      display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
-    }
-    .stat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 0.9rem 1.2rem;
-      min-width: 130px;
-    }
+    .stats-bar { display: flex; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1.2rem; min-width: 130px; }
     .stat-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.3rem; }
     .stat-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; line-height: 1; }
 
-    /* ── Table ── */
-    .table-wrap {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex; gap: 0.75rem; margin-bottom: 1.2rem; flex-wrap: wrap; align-items: center;
     }
+    .filter-bar select {
+      width: auto; min-width: 160px; padding: 0.5rem 0.85rem;
+      font-size: 0.82rem;
+    }
+    .filter-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+    .filter-reset {
+      background: none; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0.45rem 0.85rem; font-family: 'Jost', sans-serif; font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-soft); cursor: pointer; transition: border-color var(--trans), color var(--trans);
+    }
+    .filter-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Abmeldungen block ── */
+    .abmeldungen-bar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .abmeldungen-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .abmeldungen-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+    .abmeldungen-count { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; line-height: 1; color: #c0392b; }
+    .abmeldungen-names { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; }
+    .btn-add-abmeldung {
+      background: none; border: 1px solid #c0392b; border-radius: var(--radius);
+      padding: 0.45rem 0.9rem; font-family: 'Jost', sans-serif; font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #c0392b; cursor: pointer; white-space: nowrap;
+      transition: background var(--trans), color var(--trans);
+    }
+    .btn-add-abmeldung:hover { background: #c0392b; color: #fff; }
+
+    /* ── Table ── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
     thead tr { background: var(--ink); color: #fff; }
     th {
       padding: 0.75rem 0.9rem; text-align: left;
-      font-size: 0.68rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       white-space: nowrap; cursor: pointer; user-select: none;
-      position: relative;
     }
     th:hover { background: #2d2d2a; }
     th .sort-icon { margin-left: 0.3rem; opacity: 0.4; font-style: normal; }
@@ -156,25 +145,18 @@
     tbody tr:hover { background: #faf8f5; }
     td { padding: 0.7rem 0.9rem; vertical-align: middle; }
 
-    .badge {
-      display: inline-block; padding: 0.2rem 0.6rem;
-      border-radius: 20px; font-size: 0.72rem; font-weight: 500;
-    }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 500; }
     .badge-solo { background: var(--accent-light); color: var(--accent); }
     .badge-begleitung { background: #d6e8d3; color: #3a6b35; }
 
     .edit-btn {
-      background: none; border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 0.3rem 0.55rem;
-      cursor: pointer; color: var(--ink-soft); font-size: 0.9rem;
+      background: none; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0.3rem 0.55rem; cursor: pointer; color: var(--ink-soft); font-size: 0.9rem;
       transition: border-color var(--trans), color var(--trans);
     }
     .edit-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    .empty-state {
-      text-align: center; padding: 3rem;
-      color: var(--ink-soft); font-size: 0.9rem;
-    }
+    .empty-state { text-align: center; padding: 3rem; color: var(--ink-soft); font-size: 0.9rem; }
 
     /* ── Spinner ── */
     .spinner-wrap { text-align: center; padding: 3rem; color: var(--ink-soft); }
@@ -188,64 +170,47 @@
 
     /* ── Modal ── */
     .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       display: flex; align-items: center; justify-content: center;
-      z-index: 200; padding: 1rem;
-      opacity: 0; pointer-events: none;
+      z-index: 200; padding: 1rem; opacity: 0; pointer-events: none;
       transition: opacity var(--trans);
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal {
-      background: var(--surface); border-radius: 2px;
-      border: 1px solid var(--border);
-      padding: 2rem; width: 100%; max-width: 500px;
-      max-height: 90vh; overflow-y: auto;
+      background: var(--surface); border-radius: 2px; border: 1px solid var(--border);
+      padding: 2rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
       transform: translateY(16px); transition: transform var(--trans);
       box-shadow: 0 16px 60px rgba(0,0,0,0.15);
     }
     .modal-overlay.open .modal { transform: translateY(0); }
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 300; margin-bottom: 1.2rem;
-    }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; margin-bottom: 1.2rem; }
     .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
     .modal-grid .full { grid-column: 1 / -1; }
     .modal label { margin-top: 0.9rem; }
-    .modal label:first-of-type { margin-top: 0; }
     textarea { resize: vertical; min-height: 70px; }
     .modal-actions { display: flex; gap: 0.6rem; margin-top: 1.5rem; justify-content: flex-end; }
     .btn-secondary {
-      padding: 0.6rem 1.1rem;
-      background: none; border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-family: 'Jost', sans-serif; font-size: 0.78rem;
+      padding: 0.6rem 1.1rem; background: none; border: 1px solid var(--border);
+      border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 0.78rem;
       font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       cursor: pointer; color: var(--ink-soft);
       transition: border-color var(--trans), color var(--trans);
     }
     .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
     .btn-save {
-      padding: 0.6rem 1.4rem;
-      background: var(--ink); color: #fff; border: none;
-      border-radius: var(--radius);
-      font-family: 'Jost', sans-serif; font-size: 0.78rem;
-      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-      cursor: pointer;
+      padding: 0.6rem 1.4rem; background: var(--ink); color: #fff; border: none;
+      border-radius: var(--radius); font-family: 'Jost', sans-serif; font-size: 0.78rem;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
       transition: background var(--trans);
     }
     .btn-save:hover { background: #2d2d2a; }
 
-    /* ── Version ── */
-    .version-tag {
-      position: fixed; bottom: 0.6rem; right: 0.8rem;
-      font-size: 0.65rem; color: var(--border);
-      pointer-events: none;
-    }
+    /* ── Abmeldung modal ── */
+    #abmeldung-modal .modal { max-width: 400px; }
 
     /* ── Print ── */
     @media print {
-      .topbar, .stats-bar, .edit-btn, .modal-overlay, .version-tag { display: none !important; }
+      .topbar, .filter-bar, .abmeldungen-bar .btn-add-abmeldung, .edit-btn, .modal-overlay { display: none !important; }
       .main { padding: 0; }
       body { background: #fff; }
       table { font-size: 0.8rem; }
@@ -288,7 +253,33 @@
   </div>
 
   <div class="main">
+    <!-- Stats -->
     <div class="stats-bar" id="stats-bar"></div>
+
+    <!-- Abmeldungen -->
+    <div class="abmeldungen-bar">
+      <div class="abmeldungen-left">
+        <div>
+          <div class="abmeldungen-title">Abmeldungen</div>
+          <div class="abmeldungen-count" id="abmeldungen-count">0</div>
+        </div>
+        <div class="abmeldungen-names" id="abmeldungen-names">–</div>
+      </div>
+      <button class="btn-add-abmeldung" onclick="openAbmeldungModal()">+ Abmeldung erfassen</button>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      <select id="filter-typ" onchange="applyFilter()">
+        <option value="">Alle Typen</option>
+        <option value="Solo">Solo</option>
+        <option value="Mit Begleitung">Mit Begleitung</option>
+      </select>
+      <button class="filter-reset" onclick="resetFilter()">✕ Zurücksetzen</button>
+    </div>
+
+    <!-- Table -->
     <div class="table-wrap">
       <div id="table-container">
         <div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>
@@ -302,34 +293,13 @@
   <div class="modal">
     <div class="modal-title">Anmeldung bearbeiten</div>
     <div class="modal-grid">
-      <div>
-        <label for="m-vorname">Vorname</label>
-        <input type="text" id="m-vorname" />
-      </div>
-      <div>
-        <label for="m-nachname">Nachname</label>
-        <input type="text" id="m-nachname" />
-      </div>
-      <div>
-        <label for="m-email">E-Mail</label>
-        <input type="email" id="m-email" />
-      </div>
-      <div>
-        <label for="m-tel">Telefon</label>
-        <input type="tel" id="m-tel" />
-      </div>
-      <div>
-        <label for="m-b-vorname">Begleitung Vorname</label>
-        <input type="text" id="m-b-vorname" />
-      </div>
-      <div>
-        <label for="m-b-nachname">Begleitung Nachname</label>
-        <input type="text" id="m-b-nachname" />
-      </div>
-      <div class="full">
-        <label for="m-kommentar">Kommentar</label>
-        <textarea id="m-kommentar"></textarea>
-      </div>
+      <div><label for="m-vorname">Vorname</label><input type="text" id="m-vorname" /></div>
+      <div><label for="m-nachname">Nachname</label><input type="text" id="m-nachname" /></div>
+      <div><label for="m-email">E-Mail</label><input type="email" id="m-email" /></div>
+      <div><label for="m-tel">Telefon</label><input type="tel" id="m-tel" /></div>
+      <div><label for="m-b-vorname">Begl. Vorname</label><input type="text" id="m-b-vorname" /></div>
+      <div><label for="m-b-nachname">Begl. Nachname</label><input type="text" id="m-b-nachname" /></div>
+      <div class="full"><label for="m-kommentar">Kommentar</label><textarea id="m-kommentar"></textarea></div>
     </div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal()">Abbrechen</button>
@@ -338,86 +308,99 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.001 · © Stützpunktfeuerwehr Meilen / LOL</div>
+<!-- ══ Abmeldung Modal ══ -->
+<div class="modal-overlay" id="abmeldung-modal" onclick="closeAbmeldungOnOverlay(event)">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-title">Abmeldung erfassen</div>
+    <label for="ab-vorname">Vorname</label>
+    <input type="text" id="ab-vorname" style="margin-bottom:0.8rem" />
+    <label for="ab-nachname">Nachname</label>
+    <input type="text" id="ab-nachname" style="margin-bottom:0.8rem" />
+    <label for="ab-grund">Grund (optional)</label>
+    <textarea id="ab-grund" style="min-height:60px"></textarea>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeAbmeldungModal()">Abbrechen</button>
+      <button class="btn-save" onclick="saveAbmeldung()">Speichern</button>
+    </div>
+  </div>
+</div>
 
 <script>
-  // ── Config ──────────────────────────────────────────────
+  // ── Config ────────────────────────────────────────────
   const ADMIN_PASSWORD  = 'ichkannalles';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTv6EPU4YIAl--U-hShJMLWtgFlD_nTe7xzcAtIrX5uy3DsyzR8IfeZkz5N7GYp6lEpg/exec';
-  // ────────────────────────────────────────────────────────
+  const AB_KEY          = 'bpg_abmeldungen';
+  // ─────────────────────────────────────────────────────
 
-  let allRows    = [];   // raw data from sheet
-  let editRowIdx = null; // sheet row index (1-based, offset by header)
+  let allRows    = [];
+  let editRowIdx = null;
   let sortCol    = null;
   let sortDir    = 'asc';
+  let abmeldungen = JSON.parse(localStorage.getItem(AB_KEY) || '[]');
 
-  // ── Login ────────────────────────────────────────────────
-  document.getElementById('admin-pw').addEventListener('keydown', e => {
-    if (e.key === 'Enter') adminLogin();
-  });
+  // ── Login ─────────────────────────────────────────────
+  document.getElementById('admin-pw').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
 
   function adminLogin() {
-    const val = document.getElementById('admin-pw').value;
-    const err = document.getElementById('login-err');
-    if (val === ADMIN_PASSWORD) {
+    const v = document.getElementById('admin-pw').value;
+    if (v === ADMIN_PASSWORD) {
       document.getElementById('login-stage').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
       loadData();
+      renderAbmeldungen();
     } else {
-      err.style.display = 'block';
+      document.getElementById('login-err').style.display = 'block';
       document.getElementById('admin-pw').focus();
     }
   }
 
-  // ── Load data from Apps Script ───────────────────────────
+  // ── Load data ─────────────────────────────────────────
   async function loadData() {
     document.getElementById('table-container').innerHTML =
       '<div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>';
-
     try {
       const res  = await fetch(APPS_SCRIPT_URL + '?action=getAll');
       const json = await res.json();
       allRows = json.rows || [];
       renderStats();
-      renderTable(allRows);
-    } catch (e) {
+      applyFilter();
+    } catch(e) {
       document.getElementById('table-container').innerHTML =
-        '<div class="empty-state">⚠️ Fehler beim Laden der Daten.<br><small>' + e.message + '</small></div>';
+        '<div class="empty-state">⚠️ Fehler beim Laden.<br><small>' + e.message + '</small></div>';
     }
   }
 
-  // ── Stats ────────────────────────────────────────────────
+  // ── Stats ─────────────────────────────────────────────
   function renderStats() {
     const total      = allRows.length;
     const solo       = allRows.filter(r => r.typ === 'Solo').length;
     const begleitung = allRows.filter(r => r.typ === 'Mit Begleitung').length;
-    const personen   = total + begleitung; // every +1 for companions
-
+    const personen   = total + begleitung;
     document.getElementById('count-badge').textContent = total;
-
     document.getElementById('stats-bar').innerHTML = `
-      <div class="stat-card">
-        <div class="stat-label">Anmeldungen</div>
-        <div class="stat-val">${total}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Solo</div>
-        <div class="stat-val">${solo}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Mit Begleitung</div>
-        <div class="stat-val">${begleitung}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Personen total</div>
-        <div class="stat-val">${personen}</div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Anmeldungen</div><div class="stat-val">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Solo</div><div class="stat-val">${solo}</div></div>
+      <div class="stat-card"><div class="stat-label">Mit Begleitung</div><div class="stat-val">${begleitung}</div></div>
+      <div class="stat-card"><div class="stat-label">Personen total</div><div class="stat-val">${personen}</div></div>
     `;
   }
 
-  // ── Table ────────────────────────────────────────────────
+  // ── Filter ────────────────────────────────────────────
+  function applyFilter() {
+    const typ = document.getElementById('filter-typ').value;
+    let filtered = [...allRows];
+    if (typ) filtered = filtered.filter(r => r.typ === typ);
+    renderTable(filtered);
+  }
+
+  function resetFilter() {
+    document.getElementById('filter-typ').value = '';
+    applyFilter();
+  }
+
+  // ── Table ─────────────────────────────────────────────
   const COLS = [
-    { key: 'timestamp',  label: 'Datum/Zeit' },
+    { key: 'timestamp',  label: 'Datum / Zeit' },
     { key: 'typ',        label: 'Typ' },
     { key: 'vorname',    label: 'Vorname' },
     { key: 'nachname',   label: 'Nachname' },
@@ -428,25 +411,35 @@
     { key: 'kommentar',  label: 'Kommentar' },
   ];
 
+  function formatTimestamp(raw) {
+    if (!raw) return '';
+    // Try to parse and shorten; if unparseable return as-is
+    const d = new Date(raw);
+    if (isNaN(d)) {
+      // Already a locale string like "08.06.2026, 08:41:28" — trim to date + short time
+      return raw.replace(/:\d{2}(\s*(GMT|UTC|MEZ|MESZ).*)$/i, '').trim();
+    }
+    return d.toLocaleDateString('de-CH') + ' ' + d.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+  }
+
   function renderTable(rows) {
     if (!rows.length) {
       document.getElementById('table-container').innerHTML =
-        '<div class="empty-state">Noch keine Anmeldungen vorhanden.</div>';
+        '<div class="empty-state">Keine Einträge gefunden.</div>';
       return;
     }
-
     const thead = COLS.map(c => {
-      let cls = '';
-      if (sortCol === c.key) cls = sortDir === 'asc' ? 'sort-asc' : 'sort-desc';
+      let cls = sortCol === c.key ? (sortDir === 'asc' ? 'sort-asc' : 'sort-desc') : '';
       return `<th class="${cls}" onclick="sortBy('${c.key}')">${c.label}<i class="sort-icon"></i></th>`;
     }).join('') + '<th style="width:44px"></th>';
 
     const tbody = rows.map((r, i) => {
-      const typBadge = r.typ === 'Solo'
+      const globalIdx = allRows.indexOf(r);
+      const typBadge  = r.typ === 'Solo'
         ? `<span class="badge badge-solo">Solo</span>`
         : `<span class="badge badge-begleitung">+1</span>`;
       return `<tr>
-        <td>${esc(r.timestamp)}</td>
+        <td>${esc(formatTimestamp(r.timestamp))}</td>
         <td>${typBadge}</td>
         <td>${esc(r.vorname)}</td>
         <td>${esc(r.nachname)}</td>
@@ -455,7 +448,7 @@
         <td>${esc(r.b_vorname)}</td>
         <td>${esc(r.b_nachname)}</td>
         <td>${esc(r.kommentar)}</td>
-        <td><button class="edit-btn" title="Bearbeiten" onclick="openEdit(${i})">✏️</button></td>
+        <td><button class="edit-btn" title="Bearbeiten" onclick="openEdit(${globalIdx})">✏️</button></td>
       </tr>`;
     }).join('');
 
@@ -463,28 +456,23 @@
       `<table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
   }
 
-  function esc(str) {
-    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  // ── Sort ─────────────────────────────────────────────────
+  // ── Sort ──────────────────────────────────────────────
   function sortBy(key) {
-    if (sortCol === key) {
-      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      sortCol = key; sortDir = 'asc';
-    }
-    const sorted = [...allRows].sort((a, b) => {
-      const av = (a[key] || '').toLowerCase();
-      const bv = (b[key] || '').toLowerCase();
-      if (av < bv) return sortDir === 'asc' ? -1 : 1;
-      if (av > bv) return sortDir === 'asc' ?  1 : -1;
-      return 0;
+    if (sortCol === key) { sortDir = sortDir === 'asc' ? 'desc' : 'asc'; }
+    else { sortCol = key; sortDir = 'asc'; }
+    const typ = document.getElementById('filter-typ').value;
+    let rows = [...allRows];
+    if (typ) rows = rows.filter(r => r.typ === typ);
+    rows.sort((a, b) => {
+      const av = (a[key]||'').toLowerCase(), bv = (b[key]||'').toLowerCase();
+      return av < bv ? (sortDir==='asc'?-1:1) : av > bv ? (sortDir==='asc'?1:-1) : 0;
     });
-    renderTable(sorted);
+    renderTable(rows);
   }
 
-  // ── Edit Modal ───────────────────────────────────────────
+  // ── Edit Modal ────────────────────────────────────────
   function openEdit(idx) {
     editRowIdx = idx;
     const r = allRows[idx];
@@ -498,19 +486,12 @@
     document.getElementById('modal-overlay').classList.add('open');
   }
 
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-    editRowIdx = null;
-  }
-
-  function closeModalOnOverlay(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  }
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editRowIdx = null; }
+  function closeModalOnOverlay(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
 
   async function saveEdit() {
     const r = allRows[editRowIdx];
-    const updated = {
-      ...r,
+    const updated = { ...r,
       vorname:    document.getElementById('m-vorname').value.trim(),
       nachname:   document.getElementById('m-nachname').value.trim(),
       email:      document.getElementById('m-email').value.trim(),
@@ -519,26 +500,50 @@
       b_nachname: document.getElementById('m-b-nachname').value.trim(),
       kommentar:  document.getElementById('m-kommentar').value.trim(),
     };
-
-    const btn = document.querySelector('.btn-save');
+    const btn = document.querySelector('#modal-overlay .btn-save');
     btn.textContent = '…'; btn.disabled = true;
-
     try {
       await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
+        method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'update', rowIndex: r._rowIndex, data: updated }),
       });
       allRows[editRowIdx] = updated;
-      renderStats();
-      renderTable(allRows);
-      closeModal();
-    } catch(e) {
-      alert('Fehler beim Speichern: ' + e.message);
-    } finally {
-      btn.textContent = '💾 Speichern'; btn.disabled = false;
+      renderStats(); applyFilter(); closeModal();
+    } catch(e) { alert('Fehler: ' + e.message); }
+    finally { btn.textContent = '💾 Speichern'; btn.disabled = false; }
+  }
+
+  // ── Abmeldungen (localStorage) ────────────────────────
+  function renderAbmeldungen() {
+    const count = abmeldungen.length;
+    document.getElementById('abmeldungen-count').textContent = count;
+    if (count === 0) {
+      document.getElementById('abmeldungen-names').textContent = '–';
+    } else {
+      document.getElementById('abmeldungen-names').textContent =
+        abmeldungen.map(a => a.vorname + ' ' + a.nachname).join(', ');
     }
+  }
+
+  function openAbmeldungModal() {
+    document.getElementById('ab-vorname').value = '';
+    document.getElementById('ab-nachname').value = '';
+    document.getElementById('ab-grund').value = '';
+    document.getElementById('abmeldung-modal').classList.add('open');
+  }
+
+  function closeAbmeldungModal() { document.getElementById('abmeldung-modal').classList.remove('open'); }
+  function closeAbmeldungOnOverlay(e) { if (e.target === document.getElementById('abmeldung-modal')) closeAbmeldungModal(); }
+
+  function saveAbmeldung() {
+    const vn = document.getElementById('ab-vorname').value.trim();
+    const nn = document.getElementById('ab-nachname').value.trim();
+    if (!vn || !nn) { alert('Bitte Vor- und Nachname eingeben.'); return; }
+    abmeldungen.push({ vorname: vn, nachname: nn, grund: document.getElementById('ab-grund').value.trim() });
+    localStorage.setItem(AB_KEY, JSON.stringify(abmeldungen));
+    renderAbmeldungen();
+    closeAbmeldungModal();
   }
 </script>
 </body>
