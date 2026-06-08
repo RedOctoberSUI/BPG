@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anmeldung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f7f5f1;
+      --surface:  #ffffff;
+      --ink:      #1a1a18;
+      --ink-soft: #6b6860;
+      --accent:   #b07d4f;
+      --accent-light: #e8ddd3;
+      --border:   #e0dbd4;
+      --radius:   4px;
+      --trans:    0.3s ease;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+    }
+
+    /* ── Layout ── */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Typography ── */
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.1rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.8rem 0;
+    }
+
+    /* ── Password screen ── */
+    .pw-hint {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── Form elements ── */
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+      margin-top: 1rem;
+    }
+    label:first-of-type { margin-top: 0; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: var(--ink);
+      transition: border-color var(--trans), box-shadow var(--trans);
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(176,125,79,0.12);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .input-error {
+      border-color: #c0392b !important;
+    }
+    .error-msg {
+      font-size: 0.78rem;
+      color: #c0392b;
+      margin-top: 0.3rem;
+    }
+
+    /* ── RSVP choices ── */
+    .rsvp-options { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .rsvp-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color var(--trans), background var(--trans), transform 0.15s ease;
+    }
+    .rsvp-btn:hover {
+      border-color: var(--accent);
+      background: #faf8f5;
+      transform: translateX(3px);
+    }
+    .rsvp-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .rsvp-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+    .rsvp-sub {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      margin-top: 0.15rem;
+    }
+
+    /* ── Companion block ── */
+    .companion-block {
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.1rem;
+      margin-top: 0.5rem;
+    }
+    .companion-block .block-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── Primary button ── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      margin-top: 1.8rem;
+      padding: 0.85rem;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--trans), transform 0.15s ease;
+    }
+    .btn-primary:hover { background: #2d2d2a; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+
+    /* ── Screens hidden by default ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── Bye screen ── */
+    .bye-wrap { text-align: center; }
+    .bye-wrap .big-emoji { font-size: 3rem; margin-bottom: 1rem; }
+    .bye-wrap h1 { margin-bottom: 0.5rem; }
+
+    /* ── Success screen ── */
+    .success-wrap { text-align: center; }
+    .success-wrap .big-emoji { font-size: 3rem; margin-bottom: 1rem; }
+    .success-wrap h1 { margin-bottom: 0.5rem; }
+
+    /* ── Spinner ── */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .card { padding: 2rem 1.4rem; }
+      h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="stage">
+  <div class="card">
+
+    <!-- ══ SCREEN 1: Password ══ -->
+    <div id="screen-pw" class="screen active">
+      <div class="eyebrow">Einladung</div>
+      <h1>Willkommen</h1>
+      <p class="subtitle">Bitte gib das Passwort ein, um zur Anmeldung zu gelangen.</p>
+      <div class="divider"></div>
+      <label for="pw-input">Passwort</label>
+      <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
+      <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
+      <button class="btn-primary" id="pw-btn" onclick="checkPassword()">Weiter</button>
+    </div>
+
+    <!-- ══ SCREEN 2: RSVP Choice ══ -->
+    <div id="screen-rsvp" class="screen">
+      <div class="eyebrow">Deine Antwort</div>
+      <h1>Kannst du kommen?</h1>
+      <p class="subtitle">Wir freuen uns auf deine Rückmeldung.</p>
+      <div class="divider"></div>
+      <div class="rsvp-options">
+        <button class="rsvp-btn" onclick="selectRsvp('a')">
+          <span class="rsvp-icon">🎉</span>
+          <div>
+            <div class="rsvp-label">Ja, ich komme gerne</div>
+            <div class="rsvp-sub">Ich bin dabei – solo.</div>
+          </div>
+        </button>
+        <button class="rsvp-btn" onclick="selectRsvp('b')">
+          <span class="rsvp-icon">👫</span>
+          <div>
+            <div class="rsvp-label">Ja, ich komme gerne mit Begleitung</div>
+            <div class="rsvp-sub">Ich bringe jemanden mit.</div>
+          </div>
+        </button>
+        <button class="rsvp-btn" onclick="selectRsvp('c')">
+          <span class="rsvp-icon">😔</span>
+          <div>
+            <div class="rsvp-label">Nein, ich habe keine Zeit und Lust mehr Zeit mit dir zu verbringen</div>
+            <div class="rsvp-sub">Schade, vielleicht ein anderes Mal.</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN 3: Form (A = solo, B = mit Begleitung) ══ -->
+    <div id="screen-form" class="screen">
+      <div class="eyebrow" id="form-eyebrow">Anmeldung</div>
+      <h1>Deine Angaben</h1>
+      <p class="subtitle">Damit wir alles gut planen können.</p>
+      <div class="divider"></div>
+
+      <label for="f-vorname">Vorname</label>
+      <input type="text" id="f-vorname" placeholder="z.B. Anna" />
+
+      <label for="f-nachname">Nachname</label>
+      <input type="text" id="f-nachname" placeholder="z.B. Muster" />
+
+      <label for="f-email">E-Mail</label>
+      <input type="email" id="f-email" placeholder="anna@beispiel.ch" />
+
+      <label for="f-tel">Telefon</label>
+      <input type="tel" id="f-tel" placeholder="+41 79 000 00 00" />
+
+      <!-- Companion block – only visible for option B -->
+      <div id="companion-block" class="companion-block" style="display:none; margin-top:1.2rem;">
+        <div class="block-title">Begleitung</div>
+        <label for="f-b-vorname">Vorname Begleitung</label>
+        <input type="text" id="f-b-vorname" placeholder="z.B. Ben" />
+        <label for="f-b-nachname">Nachname Begleitung</label>
+        <input type="text" id="f-b-nachname" placeholder="z.B. Muster" />
+      </div>
+
+      <label for="f-kommentar" style="margin-top:1.2rem;">Kommentar <span style="font-weight:300;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <textarea id="f-kommentar" placeholder="Allfällige Hinweise, Wünsche, …"></textarea>
+
+      <div class="error-msg" id="form-error" style="display:none">Bitte alle Pflichtfelder ausfüllen.</div>
+      <button class="btn-primary" id="submit-btn" onclick="submitForm()">Anmeldung absenden</button>
+    </div>
+
+    <!-- ══ SCREEN 4: Bye ══ -->
+    <div id="screen-bye" class="screen">
+      <div class="bye-wrap">
+        <div class="big-emoji">👋</div>
+        <div class="eyebrow">Bis zum nächsten Mal</div>
+        <h1>Schade!</h1>
+        <p class="subtitle" style="margin-top:0.5rem">Wir hoffen, dich ein andermal zu sehen.<br>Alles Gute!</p>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN 5: Success ══ -->
+    <div id="screen-success" class="screen">
+      <div class="success-wrap">
+        <div class="big-emoji">🥂</div>
+        <div class="eyebrow">Anmeldung erfolgreich</div>
+        <h1>Bis bald!</h1>
+        <p class="subtitle" id="success-msg" style="margin-top:0.5rem">Wir freuen uns auf dich.</p>
+      </div>
+    </div>
+
+  </div><!-- .card -->
+</div><!-- .stage -->
+
+<script>
+  // ── Config ──────────────────────────────────────────────
+  const PASSWORD       = 'HappyHippoShow_26';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTv6EPU4YIAl--U-hShJMLWtgFlD_nTe7xzcAtIrX5uy3DsyzR8IfeZkz5N7GYp6lEpg/exec';
+  // ────────────────────────────────────────────────────────
+
+  let currentRsvp = null;
+
+  // Allow Enter key on password field
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    el.style.animation = 'none';
+    requestAnimationFrame(() => { el.style.animation = ''; });
+  }
+
+  function checkPassword() {
+    const val = document.getElementById('pw-input').value;
+    const err = document.getElementById('pw-error');
+    if (val === PASSWORD) {
+      err.style.display = 'none';
+      showScreen('screen-rsvp');
+    } else {
+      err.style.display = 'block';
+      document.getElementById('pw-input').classList.add('input-error');
+      document.getElementById('pw-input').focus();
+    }
+  }
+
+  function selectRsvp(choice) {
+    currentRsvp = choice;
+    if (choice === 'c') {
+      showScreen('screen-bye');
+      return;
+    }
+    const companion = document.getElementById('companion-block');
+    const eyebrow   = document.getElementById('form-eyebrow');
+    if (choice === 'b') {
+      companion.style.display = 'block';
+      eyebrow.textContent = 'Anmeldung · Mit Begleitung';
+    } else {
+      companion.style.display = 'none';
+      eyebrow.textContent = 'Anmeldung';
+    }
+    showScreen('screen-form');
+  }
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  async function submitForm() {
+    const err = document.getElementById('form-error');
+    err.style.display = 'none';
+
+    // Validation
+    const required = ['f-vorname', 'f-nachname', 'f-email', 'f-tel'];
+    if (currentRsvp === 'b') required.push('f-b-vorname', 'f-b-nachname');
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { el.classList.add('input-error'); valid = false; }
+      else el.classList.remove('input-error');
+    });
+    if (!valid) { err.style.display = 'block'; return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Wird gesendet…';
+
+    const payload = {
+      typ:           currentRsvp === 'a' ? 'Solo' : 'Mit Begleitung',
+      vorname:       val('f-vorname'),
+      nachname:      val('f-nachname'),
+      email:         val('f-email'),
+      tel:           val('f-tel'),
+      b_vorname:     currentRsvp === 'b' ? val('f-b-vorname') : '',
+      b_nachname:    currentRsvp === 'b' ? val('f-b-nachname') : '',
+      kommentar:     val('f-kommentar'),
+      timestamp:     new Date().toLocaleString('de-CH'),
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const msg = document.getElementById('success-msg');
+      msg.textContent = currentRsvp === 'b'
+        ? `Wir freuen uns auf dich und deine Begleitung!`
+        : `Wir freuen uns auf dich, ${val('f-vorname')}!`;
+      showScreen('screen-success');
+    } catch (e) {
+      btn.disabled = false;
+      btn.innerHTML = 'Anmeldung absenden';
+      err.textContent = 'Fehler beim Senden. Bitte nochmals versuchen.';
+      err.style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
