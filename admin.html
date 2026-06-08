@@ -108,15 +108,8 @@
 
     /* ── Abmeldungen block ── */
     .abmeldungen-bar {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1rem 1.2rem;
-      margin-bottom: 1.2rem;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 1.2rem; display: flex; justify-content: flex-end;
     }
-    .abmeldungen-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-    .abmeldungen-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
-    .abmeldungen-count { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; line-height: 1; color: #c0392b; }
-    .abmeldungen-names { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; }
     .btn-add-abmeldung {
       background: none; border: 1px solid #c0392b; border-radius: var(--radius);
       padding: 0.45rem 0.9rem; font-family: 'Jost', sans-serif; font-size: 0.75rem;
@@ -246,7 +239,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.003</span>
+      <span class="topbar-version">CLv0.004</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -261,13 +254,6 @@
 
     <!-- Abmeldungen -->
     <div class="abmeldungen-bar">
-      <div class="abmeldungen-left">
-        <div>
-          <div class="abmeldungen-title">Abmeldungen</div>
-          <div class="abmeldungen-count" id="abmeldungen-count">0</div>
-        </div>
-        <div class="abmeldungen-names" id="abmeldungen-names">–</div>
-      </div>
       <button class="btn-add-abmeldung" onclick="openAbmeldungModal()">+ Abmeldung erfassen</button>
     </div>
 
@@ -333,14 +319,12 @@
   // ── Config ────────────────────────────────────────────
   const ADMIN_PASSWORD  = 'ichkannalles';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTv6EPU4YIAl--U-hShJMLWtgFlD_nTe7xzcAtIrX5uy3DsyzR8IfeZkz5N7GYp6lEpg/exec';
-  const AB_KEY          = 'bpg_abmeldungen';
   // ─────────────────────────────────────────────────────
 
   let allRows    = [];
   let editRowIdx = null;
   let sortCol    = null;
   let sortDir    = 'asc';
-  let abmeldungen = JSON.parse(localStorage.getItem(AB_KEY) || '[]');
 
   // ── Login ─────────────────────────────────────────────
   document.getElementById('admin-pw').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
@@ -351,7 +335,6 @@
       document.getElementById('login-stage').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
       loadData();
-      renderAbmeldungen();
     } else {
       document.getElementById('login-err').style.display = 'block';
       document.getElementById('admin-pw').focus();
@@ -409,6 +392,7 @@
   const COLS = [
     { key: 'timestamp',  label: 'Datum / Zeit' },
     { key: 'typ',        label: 'Typ' },
+    { key: 'source',     label: 'Quelle' },
     { key: 'vorname',    label: 'Vorname' },
     { key: 'nachname',   label: 'Nachname' },
     { key: 'email',      label: 'E-Mail' },
@@ -450,6 +434,7 @@
       return `<tr>
         <td>${esc(formatTimestamp(r.timestamp))}</td>
         <td>${typBadge}</td>
+        <td>${r.source === 'manuell' ? '<span class="badge" style="background:#fff3cd;color:#856404">manuell</span>' : '<span class="badge" style="background:#e8f4fd;color:#1a5276">form</span>'}</td>
         <td>${esc(r.vorname)}</td>
         <td>${esc(r.nachname)}</td>
         <td>${esc(r.email)}</td>
@@ -501,6 +486,7 @@
   async function saveEdit() {
     const r = allRows[editRowIdx];
     const updated = { ...r,
+      source:     r.source || 'form',
       vorname:    document.getElementById('m-vorname').value.trim(),
       nachname:   document.getElementById('m-nachname').value.trim(),
       email:      document.getElementById('m-email').value.trim(),
@@ -523,17 +509,7 @@
     finally { btn.textContent = '💾 Speichern'; btn.disabled = false; }
   }
 
-  // ── Abmeldungen (localStorage) ────────────────────────
-  function renderAbmeldungen() {
-    const count = abmeldungen.length;
-    document.getElementById('abmeldungen-count').textContent = count;
-    if (count === 0) {
-      document.getElementById('abmeldungen-names').textContent = '–';
-    } else {
-      document.getElementById('abmeldungen-names').textContent =
-        abmeldungen.map(a => a.vorname + ' ' + a.nachname).join(', ');
-    }
-  }
+  // ── Abmeldungen ───────────────────────────────────────
 
   function openAbmeldungModal() {
     document.getElementById('ab-vorname').value = '';
@@ -545,16 +521,31 @@
   function closeAbmeldungModal() { document.getElementById('abmeldung-modal').classList.remove('open'); }
   function closeAbmeldungOnOverlay(e) { if (e.target === document.getElementById('abmeldung-modal')) closeAbmeldungModal(); }
 
-  function saveAbmeldung() {
+  async function saveAbmeldung() {
     const vn = document.getElementById('ab-vorname').value.trim();
     const nn = document.getElementById('ab-nachname').value.trim();
     if (!vn || !nn) { alert('Bitte Vor- und Nachname eingeben.'); return; }
-    abmeldungen.push({ vorname: vn, nachname: nn, grund: document.getElementById('ab-grund').value.trim() });
-    localStorage.setItem(AB_KEY, JSON.stringify(abmeldungen));
-    renderAbmeldungen();
-    closeAbmeldungModal();
+    const btn = document.querySelector('#abmeldung-modal .btn-save');
+    btn.textContent = '…'; btn.disabled = true;
+    const payload = {
+      typ: 'Absage', source: 'manuell',
+      vorname: vn, nachname: nn,
+      email: '', tel: '', b_vorname: '', b_nachname: '',
+      kommentar: document.getElementById('ab-grund').value.trim(),
+      timestamp: new Date().toLocaleString('de-CH'),
+    };
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      closeAbmeldungModal();
+      loadData();
+    } catch(e) { alert('Fehler: ' + e.message); }
+    finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.003</div>
+<div class="version-tag">CLv0.004</div>
 </body>
 </html>

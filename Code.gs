@@ -1,11 +1,10 @@
 // ═══════════════════════════════════════════════════════
-//  Fest-Anmeldung · Apps Script  CLv0.001
+//  Fest-Anmeldung · Apps Script  CLv0.004
 //  Sheet-ID: 1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0
-//  © Stützpunktfeuerwehr Meilen / LOL
 // ═══════════════════════════════════════════════════════
 
 const SHEET_NAME = 'Anmeldungen';
-const HEADERS    = ['timestamp','typ','vorname','nachname','email','tel','b_vorname','b_nachname','kommentar'];
+const HEADERS    = ['timestamp','typ','source','vorname','nachname','email','tel','b_vorname','b_nachname','kommentar'];
 
 function getSheet() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
@@ -13,7 +12,7 @@ function getSheet() {
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
     const hdr = sheet.getRange(1, 1, 1, HEADERS.length);
-    hdr.setValues([['Timestamp','Typ','Vorname','Nachname','E-Mail','Telefon','Begl. Vorname','Begl. Nachname','Kommentar']]);
+    hdr.setValues([['Timestamp','Typ','Quelle','Vorname','Nachname','E-Mail','Telefon','Begl. Vorname','Begl. Nachname','Kommentar']]);
     hdr.setFontWeight('bold').setBackground('#1a1a18').setFontColor('#ffffff');
   }
   return sheet;
@@ -31,7 +30,7 @@ function doGet(e) {
     const rows = data.slice(1).map((row, i) => {
       const obj = {};
       HEADERS.forEach((h, j) => obj[h] = row[j] !== undefined ? String(row[j]) : '');
-      obj._rowIndex = i + 2; // 1-based sheet row (offset by header)
+      obj._rowIndex = i + 2;
       return obj;
     });
     return jsonResponse({ rows });
@@ -52,6 +51,7 @@ function doPost(e) {
       sheet.getRange(rowIdx, 1, 1, HEADERS.length).setValues([[
         d.timestamp  || '',
         d.typ        || '',
+        d.source     || '',
         d.vorname    || '',
         d.nachname   || '',
         d.email      || '',
@@ -67,6 +67,7 @@ function doPost(e) {
     sheet.appendRow([
       data.timestamp  || new Date().toLocaleString('de-CH'),
       data.typ        || '',
+      data.source     || 'form',
       data.vorname    || '',
       data.nachname   || '',
       data.email      || '',
@@ -91,7 +92,8 @@ function jsonResponse(obj) {
 // ── Test ──────────────────────────────────────────────
 function testInsert() {
   const fake = { postData: { contents: JSON.stringify({
-    typ: 'Mit Begleitung', vorname: 'Anna', nachname: 'Muster',
+    typ: 'Mit Begleitung', source: 'form',
+    vorname: 'Anna', nachname: 'Muster',
     email: 'anna@beispiel.ch', tel: '+41 79 000 00 00',
     b_vorname: 'Ben', b_nachname: 'Muster', kommentar: 'Test',
     timestamp: new Date().toLocaleString('de-CH'),
