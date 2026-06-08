@@ -69,6 +69,7 @@
     .topbar-left { display: flex; align-items: center; gap: 0.8rem; }
     .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 300; letter-spacing: 0.04em; }
     .topbar-badge { background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 20px; }
+    .topbar-version { font-size: 0.65rem; color: rgba(255,255,255,0.35); font-weight: 300; letter-spacing: 0.05em; }
     .topbar-actions { display: flex; gap: 0.6rem; }
     .icon-btn {
       background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
@@ -148,6 +149,7 @@
     .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 500; }
     .badge-solo { background: var(--accent-light); color: var(--accent); }
     .badge-begleitung { background: #d6e8d3; color: #3a6b35; }
+    .badge-absage { background: #fde8e8; color: #c0392b; }
 
     .edit-btn {
       background: none; border: 1px solid var(--border); border-radius: var(--radius);
@@ -244,6 +246,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
+      <span class="topbar-version">CLv0.003</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -275,6 +278,7 @@
         <option value="">Alle Typen</option>
         <option value="Solo">Solo</option>
         <option value="Mit Begleitung">Mit Begleitung</option>
+        <option value="Absage">Absage</option>
       </select>
       <button class="filter-reset" onclick="resetFilter()">✕ Zurücksetzen</button>
     </div>
@@ -372,16 +376,19 @@
 
   // ── Stats ─────────────────────────────────────────────
   function renderStats() {
-    const total      = allRows.length;
-    const solo       = allRows.filter(r => r.typ === 'Solo').length;
-    const begleitung = allRows.filter(r => r.typ === 'Mit Begleitung').length;
+    const anmeldungen = allRows.filter(r => r.typ !== 'Absage');
+    const total      = anmeldungen.length;
+    const solo       = anmeldungen.filter(r => r.typ === 'Solo').length;
+    const begleitung = anmeldungen.filter(r => r.typ === 'Mit Begleitung').length;
     const personen   = total + begleitung;
+    const absagen    = allRows.filter(r => r.typ === 'Absage').length;
     document.getElementById('count-badge').textContent = total;
     document.getElementById('stats-bar').innerHTML = `
       <div class="stat-card"><div class="stat-label">Anmeldungen</div><div class="stat-val">${total}</div></div>
       <div class="stat-card"><div class="stat-label">Solo</div><div class="stat-val">${solo}</div></div>
       <div class="stat-card"><div class="stat-label">Mit Begleitung</div><div class="stat-val">${begleitung}</div></div>
       <div class="stat-card"><div class="stat-label">Personen total</div><div class="stat-val">${personen}</div></div>
+      <div class="stat-card" style="border-color:#f5c6c6"><div class="stat-label" style="color:#c0392b">Absagen</div><div class="stat-val" style="color:#c0392b">${absagen}</div></div>
     `;
   }
 
@@ -435,9 +442,11 @@
 
     const tbody = rows.map((r, i) => {
       const globalIdx = allRows.indexOf(r);
-      const typBadge  = r.typ === 'Solo'
+      const typBadge = r.typ === 'Solo'
         ? `<span class="badge badge-solo">Solo</span>`
-        : `<span class="badge badge-begleitung">+1</span>`;
+        : r.typ === 'Mit Begleitung'
+        ? `<span class="badge badge-begleitung">+1</span>`
+        : `<span class="badge badge-absage">Absage</span>`;
       return `<tr>
         <td>${esc(formatTimestamp(r.timestamp))}</td>
         <td>${typBadge}</td>
@@ -546,6 +555,6 @@
     closeAbmeldungModal();
   }
 </script>
-<div class="version-tag">CLv0.002</div>
+<div class="version-tag">CLv0.003</div>
 </body>
 </html>
