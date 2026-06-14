@@ -271,6 +271,12 @@
     .bier-row input[type="number"]::-webkit-inner-spin-button,
     .bier-row input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
+    .pw-footer {
+      margin-top: 1.5rem; text-align: center;
+      font-size: 0.6rem; letter-spacing: 0.1em;
+      color: var(--gold-dim); opacity: 0.6;
+    }
+
     @media (max-width: 520px) { .card { padding: 2.2rem 1.5rem; } h1 { font-size: 1.8rem; } }
   </style>
 </head>
@@ -288,6 +294,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()"><span>Weiter</span></button>
+      <div class="pw-footer">CLv0.008 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -417,7 +424,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.007</div>
+<div class="version-tag">CLv0.008</div>
 
 <script>
   const PASSWORD        = '69Bier';
