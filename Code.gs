@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════
-//  Fest-Anmeldung · Apps Script  CLv0.004
+//  Fest-Anmeldung · Apps Script  CLv0.005
 //  Sheet-ID: 1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0
 // ═══════════════════════════════════════════════════════
 
 const SHEET_NAME = 'Anmeldungen';
-const HEADERS    = ['timestamp','typ','source','vorname','nachname','email','tel','b_vorname','b_nachname','kommentar'];
+const HEADERS    = ['timestamp','typ','source','vorname','nachname','email','tel','b_vorname','b_nachname','bier','kommentar'];
 
 function getSheet() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
@@ -12,7 +12,7 @@ function getSheet() {
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
     const hdr = sheet.getRange(1, 1, 1, HEADERS.length);
-    hdr.setValues([['Timestamp','Typ','Quelle','Vorname','Nachname','E-Mail','Telefon','Begl. Vorname','Begl. Nachname','Kommentar']]);
+    hdr.setValues([['Timestamp','Typ','Quelle','Vorname','Nachname','E-Mail','Telefon','Begl. Vorname','Begl. Nachname','Bier','Kommentar']]);
     hdr.setFontWeight('bold').setBackground('#1a1a18').setFontColor('#ffffff');
   }
   return sheet;
@@ -58,6 +58,7 @@ function doPost(e) {
         d.tel        || '',
         d.b_vorname  || '',
         d.b_nachname || '',
+        d.bier        || 0,
         d.kommentar  || '',
       ]]);
       return jsonResponse({ status: 'ok', action: 'updated', row: rowIdx });
@@ -74,6 +75,7 @@ function doPost(e) {
       data.tel        || '',
       data.b_vorname  || '',
       data.b_nachname || '',
+      data.bier       || 0,
       data.kommentar  || '',
     ]);
     return jsonResponse({ status: 'ok', action: 'created' });

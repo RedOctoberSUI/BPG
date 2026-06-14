@@ -207,6 +207,22 @@
       font-size: 0.6rem; color: var(--border); pointer-events: none; letter-spacing: 0.1em;
     }
 
+    /* Bier row */
+    .bier-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-top: 1.1rem; flex-wrap: nowrap;
+    }
+    .bier-label {
+      font-size: 0.82rem; color: var(--ink-soft); white-space: nowrap; flex-shrink: 0;
+    }
+    .bier-row input[type="number"] {
+      width: 80px; flex-shrink: 0; padding: 0.55rem 0.7rem;
+      text-align: center; font-size: 1rem;
+      -moz-appearance: textfield;
+    }
+    .bier-row input[type="number"]::-webkit-inner-spin-button,
+    .bier-row input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
     @media (max-width: 520px) { .card { padding: 2.2rem 1.5rem; } h1 { font-size: 1.8rem; } }
   </style>
 </head>
@@ -218,7 +234,7 @@
     <div id="screen-pw" class="screen active">
       <div class="eyebrow">Einladung</div>
       <h1>Willkommen</h1>
-      <p class="subtitle">Willkommen bei Philipps lustiger Happy Hippo Show! Für mehr Informationen und An-und Abmeldeoptionen gibt das streng geheime Passwort ein. Achtung: Feind hört mit!!!!</p>
+      <p class="subtitle">grüezi zu bier und spass mit em philip.<br><br>dä wo weiss, de weiss!</p>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
       <label for="pw-input">Passwort</label>
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
@@ -229,13 +245,19 @@
     <!-- ══ SCREEN 2: Name ══ -->
     <div id="screen-name" class="screen">
       <div class="eyebrow">Wer bist du?</div>
-      <h1>Dein Name</h1>
-      <p class="subtitle">Damit wir wissen, wer kommt.</p>
+      <h1>Din Name</h1>
+      <p class="subtitle">Damit mr wüssed, wär du bisch.</p>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
       <label for="n-vorname">Vorname</label>
       <input type="text" id="n-vorname" placeholder="z.B. Anna" autocomplete="given-name" />
       <label for="n-nachname">Nachname</label>
       <input type="text" id="n-nachname" placeholder="z.B. Muster" autocomplete="family-name" />
+
+      <div class="bier-row">
+        <span class="bier-label">ich trinke an dem abig</span>
+        <input type="number" id="n-bier" min="0" max="999" placeholder="0" />
+        <span class="bier-label">Stange Bier.</span>
+      </div>
       <div class="error-msg" id="name-error" style="display:none">Bitte Vor- und Nachname eingeben.</div>
       <button class="btn-primary" onclick="submitName()"><span>Weiter</span></button>
     </div>
@@ -329,10 +351,10 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.004</div>
+<div class="version-tag">CLv0.005</div>
 
 <script>
-  const PASSWORD        = 'HappyHippoShow_26';
+  const PASSWORD        = '69Bier';
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTv6EPU4YIAl--U-hShJMLWtgFlD_nTe7xzcAtIrX5uy3DsyzR8IfeZkz5N7GYp6lEpg/exec';
 
   let currentRsvp = null;
@@ -365,7 +387,8 @@
     const err = document.getElementById('name-error');
     if (!vn || !nn) { err.style.display = 'block'; return; }
     err.style.display = 'none';
-    userName = { vorname: vn, nachname: nn };
+    const bier = parseInt(document.getElementById('n-bier').value) || 0;
+    userName = { vorname: vn, nachname: nn, bier: bier };
     document.getElementById('rsvp-nametext').textContent = fullName();
     showScreen('screen-rsvp');
   }
@@ -408,6 +431,7 @@
       email: val('f-email'), tel: val('f-tel'),
       b_vorname: currentRsvp === 'b' ? val('f-b-vorname') : '',
       b_nachname: currentRsvp === 'b' ? val('f-b-nachname') : '',
+      bier: userName.bier || 0,
       kommentar: val('f-kommentar'),
       timestamp: new Date().toLocaleString('de-CH'),
     };
