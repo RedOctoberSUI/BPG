@@ -254,10 +254,30 @@
     }
     .maps-link:hover { background: var(--gold); color: var(--bg); }
 
-    /* Bier number input */
+    /* Bier row */
+    .bier-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-top: 1.1rem; flex-wrap: nowrap;
+    }
+    .bier-label {
+      font-size: 0.82rem; color: var(--ink-soft); white-space: nowrap; flex-shrink: 0;
+    }
+    .bier-input {
+      width: 80px; flex-shrink: 0;
+      padding: 0.7rem 0.7rem;
+      text-align: center; font-size: 0.92rem;
+      background: var(--bg) !important;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      color: var(--ink); outline: none;
+      -moz-appearance: textfield;
+      transition: border-color var(--trans), box-shadow var(--trans);
+    }
+    .bier-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.1); }
+    .bier-input::-webkit-inner-spin-button,
+    .bier-input::-webkit-outer-spin-button { -webkit-appearance: none; }
     input[type="number"] { -moz-appearance: textfield; }
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
     .pw-footer {
       margin-top: 1.5rem; text-align: center;
@@ -282,7 +302,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()"><span>Weiter</span></button>
-      <div class="pw-footer">CLv0.009 · © Pippos Lustige Hundeshow</div>
+      <div class="pw-footer">CLv0.010 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -296,8 +316,11 @@
       <label for="n-nachname">Nachname</label>
       <input type="text" id="n-nachname" placeholder="z.B. Muster" autocomplete="family-name" />
 
-      <label for="n-bier">Ich trinke a dem Abig … Stange Bier. Versproche!</label>
-      <input type="number" id="n-bier" min="0" max="999" placeholder="0" style="text-align:center" />
+      <div class="bier-row">
+        <span class="bier-label">Ich trinke a dem Abig</span>
+        <input type="number" id="n-bier" min="0" max="999" placeholder="0" class="bier-input" />
+        <span class="bier-label">Stange Bier. Versproche!</span>
+      </div>
       <div class="error-msg" id="name-error" style="display:none">Bitte Vor- und Nachname eingeben.</div>
       <button class="btn-primary" onclick="submitName()"><span>Weiter</span></button>
     </div>
@@ -317,9 +340,9 @@
           <div class="info-row"><span class="info-key">Wieso</span><span class="info-val">Philipp wird 30sgi</span></div>
           <div class="info-row"><span class="info-key">Warum</span><span class="info-val">Will er am 21. Sept 1996 gschlüpft isch.</span></div>
           <div class="info-row"><span class="info-key">Wänn</span><span class="info-val">26. September 2026</span></div>
-          <div class="info-row"><span class="info-key">Ziit</span><span class="info-val">Ab 14:00 bis lääääääär</span></div>
-          <div class="info-row"><span class="info-key">Wo</span><span class="info-val">Lindenhofkeller<br><span class="info-addr">Pfalzgasse 4, 8001 Zürich</span></span></div>
+          <div class="info-row"><span class="info-key">Ziit</span><span class="info-val">Ab 14:00 bis lääär oder 23:00</span></div>
           <div class="info-row"><span class="info-key">Mitnäh</span><span class="info-val">Gueti Luune und ghörig durscht.</span></div>
+          <div class="info-row"><span class="info-key">Wo</span><span class="info-val">Lindenhofkeller<br><span class="info-addr">Pfalzgasse 4, 8001 Zürich</span></span></div>
         </div>
         <a class="maps-link" href="https://maps.google.com/?q=Lindenhofkeller,+Pfalzgasse+4,+8001+Zürich" target="_blank">
           <span>📍</span> Auf Google Maps öffnen
@@ -409,7 +432,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.009</div>
+<div class="version-tag">CLv0.010</div>
 
 <script>
   const PASSWORD        = '69Bier';
