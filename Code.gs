@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-//  Fest-Anmeldung · Apps Script  CLv0.005
+//  Fest-Anmeldung · Apps Script  CLv0.006
 //  Sheet-ID: 1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0
 // ═══════════════════════════════════════════════════════
 
@@ -97,7 +97,7 @@ function testInsert() {
     typ: 'Mit Begleitung', source: 'form',
     vorname: 'Anna', nachname: 'Muster',
     email: 'anna@beispiel.ch', tel: '+41 79 000 00 00',
-    b_vorname: 'Ben', b_nachname: 'Muster', kommentar: 'Test',
+    b_vorname: 'Ben', b_nachname: 'Muster', bier: 3, kommentar: 'Test',
     timestamp: new Date().toLocaleString('de-CH'),
   })}};
   Logger.log(doPost(fake).getContent());
