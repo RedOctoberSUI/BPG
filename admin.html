@@ -248,7 +248,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.014</span>
+      <span class="topbar-version">CLv0.015</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -457,6 +457,7 @@
         <td>${esc(r.tel)}</td>
         <td>${esc(r.b_vorname)}</td>
         <td>${esc(r.b_nachname)}</td>
+        <td>${esc(r.bier || '')}</td>
         <td>${esc(r.kommentar)}</td>
         <td><button class="edit-btn" title="Bearbeiten" onclick="openEdit(${globalIdx})">✏️</button></td>
       </tr>`;
@@ -562,6 +563,6 @@
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.014</div>
+<div class="version-tag">CLv0.015</div>
 </body>
 </html>
