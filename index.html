@@ -150,6 +150,23 @@
     }
     .rsvp-sub { font-size: 0.76rem; color: var(--ink-soft); margin-top: 0.2rem; letter-spacing: 0.02em; }
 
+    /* RSVP select */
+    #rsvp-select {
+      width: 100%; padding: 0.7rem 1rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'EB Garamond', serif; font-size: 1rem;
+      color: var(--ink); outline: none; cursor: pointer;
+      transition: border-color var(--trans), box-shadow var(--trans);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a6240' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+    #rsvp-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.1); }
+    #rsvp-select option { background: var(--surface); color: var(--ink); }
+
     /* Companion block */
     .companion-block {
       background: var(--bg); border: 1px solid var(--border);
@@ -237,10 +254,6 @@
     }
     .maps-link:hover { background: var(--gold); color: var(--bg); }
 
-    /* RSVP nope style */
-    .rsvp-btn-nope { opacity: 0.7; }
-    .rsvp-btn-nope:hover { opacity: 1; }
-
     /* Bier row */
     .bier-row {
       display: flex; align-items: center; gap: 0.6rem;
@@ -252,6 +265,7 @@
     .bier-row input[type="number"] {
       width: 80px; flex-shrink: 0; padding: 0.55rem 0.7rem;
       text-align: center; font-size: 1rem;
+      background: var(--surface);
       -moz-appearance: textfield;
     }
     .bier-row input[type="number"]::-webkit-inner-spin-button,
@@ -266,9 +280,9 @@
 
     <!-- ══ SCREEN 1: Passwort ══ -->
     <div id="screen-pw" class="screen active">
-      <div class="eyebrow">Einladung</div>
-      <h1>Willkommen</h1>
-      <p class="subtitle">grüezi zu bier und spass mit em philip.<br><br>dä wo weiss, de weiss!</p>
+      <div class="eyebrow">IIladig</div>
+      <h1>Willkomme</h1>
+      <p class="subtitle">Grüezi zu Bier und Spass mit em Philipp.<br><br>Dä wo weiss, dä weiss!</p>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
       <label for="pw-input">Passwort</label>
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
@@ -288,9 +302,9 @@
       <input type="text" id="n-nachname" placeholder="z.B. Muster" autocomplete="family-name" />
 
       <div class="bier-row">
-        <span class="bier-label">ich trinke an dem abig</span>
+        <span class="bier-label">Ich trinke a dem Abig</span>
         <input type="number" id="n-bier" min="0" max="999" placeholder="0" />
-        <span class="bier-label">Stange Bier.</span>
+        <span class="bier-label">Stange Bier. Versproche!</span>
       </div>
       <div class="error-msg" id="name-error" style="display:none">Bitte Vor- und Nachname eingeben.</div>
       <button class="btn-primary" onclick="submitName()"><span>Weiter</span></button>
@@ -322,32 +336,18 @@
 
       <div class="ornament"><span class="ornament-inner">✦</span></div>
 
-      <div class="rsvp-options">
-        <button class="rsvp-btn" onclick="selectRsvp('a')">
-          <span class="rsvp-icon">🍺</span>
-          <div><div class="rsvp-label">Ja, ich han durscht.</div><div class="rsvp-sub">Ich bin dabei – solo.</div></div>
-        </button>
-        <button class="rsvp-btn" onclick="selectRsvp('b')">
-          <span class="rsvp-icon">🍻</span>
-          <div><div class="rsvp-label">Ja, ich han durscht und mini Begleitig au!</div><div class="rsvp-sub">Ich bringe jemanden mit.</div></div>
-        </button>
-        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c1')">
-          <span class="rsvp-icon">😐</span>
-          <div><div class="rsvp-label">Nei, ich han Bier nöd so gern.</div></div>
-        </button>
-        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c2')">
-          <span class="rsvp-icon">😒</span>
-          <div><div class="rsvp-label">Nei, ich bin langwiilig und weiss noni genau was Spass isch.</div></div>
-        </button>
-        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c3')">
-          <span class="rsvp-icon">🙅</span>
-          <div><div class="rsvp-label">Nei, ich han würkli nöd gern Bier. Also eifach gar nöd!</div></div>
-        </button>
-        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c4')">
-          <span class="rsvp-icon">🚂</span>
-          <div><div class="rsvp-label">Nei, d Reis an Mittelpunkt vom Universum (also s schöne Züri) isch mr z wiit. Ich ha keis GA.</div></div>
-        </button>
-      </div>
+      <label for="rsvp-select">Mini Antwort</label>
+      <select id="rsvp-select" onchange="previewRsvp()">
+        <option value="">– Bitte wählen –</option>
+        <option value="a">🍺  Ja, ich han durscht.</option>
+        <option value="b">🍻  Ja, ich han durscht und mini Begleitig au!</option>
+        <option value="c1">😐  Nei, ich han Bier nöd so gern.</option>
+        <option value="c2">😒  Nei, ich bin langwiilig und weiss noni genau was Spass isch.</option>
+        <option value="c3">🙅  Nei, ich han würkli nöd gern Bier. Also eifach gar nöd!</option>
+        <option value="c4">🚂  Nei, d Reis an Mittelpunkt vom Universum (also s schöne Züri) isch mr z wiit. Ich ha keis GA.</option>
+      </select>
+      <div class="error-msg" id="rsvp-error" style="display:none">Bitte eine Antwort wählen.</div>
+      <button class="btn-primary" onclick="confirmRsvp()" style="margin-top:1.4rem"><span>Weiter</span></button>
     </div>
 
     <!-- ══ SCREEN 4: Formular ══ -->
@@ -417,7 +417,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.006</div>
+<div class="version-tag">CLv0.007</div>
 
 <script>
   const PASSWORD        = '69Bier';
@@ -436,6 +436,7 @@
     el.classList.add('active');
     el.style.animation = 'none';
     requestAnimationFrame(() => { el.style.animation = ''; });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function fullName() { return userName.vorname + ' ' + userName.nachname; }
@@ -457,6 +458,16 @@
     userName = { vorname: vn, nachname: nn, bier: bier };
     document.getElementById('rsvp-nametext').textContent = fullName();
     showScreen('screen-rsvp');
+  }
+
+  function previewRsvp() { /* live preview placeholder */ }
+
+  function confirmRsvp() {
+    const choice = document.getElementById('rsvp-select').value;
+    const err = document.getElementById('rsvp-error');
+    if (!choice) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    selectRsvp(choice);
   }
 
   function selectRsvp(choice) {
