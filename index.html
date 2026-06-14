@@ -302,7 +302,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()"><span>Weiter</span></button>
-      <div class="pw-footer">CLv0.010 · © Pippos Lustige Hundeshow</div>
+      <div class="pw-footer">CLv0.011 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -397,10 +397,8 @@
     <!-- ══ SCREEN 5: Absage ══ -->
     <div id="screen-absage" class="screen">
       <div class="eyebrow">🍼 Isch das Din Ernst?? 🍼</div>
-      <h1>Dini Abmäldig hämmer zur Kentniss gnoh. Mr werdeds nöd vergässe.</h1>
-      
+      <h1 id="absage-h1">…</h1>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
-      <div class="name-pill">👤 <span id="absage-nametext"></span></div>
       <label for="absage-grund">Chasch versueche dis miise Karma mitere Begründig z rette..</label>
       <textarea id="absage-grund" placeholder="Ich bin leider verhindert weil …" style="min-height:100px"></textarea>
       <div class="error-msg" id="absage-error" style="display:none">Bitte eine Begründung eingeben.</div>
@@ -421,7 +419,7 @@
     <!-- ══ SCREEN 7: Erfolg ══ -->
     <div id="screen-success" class="screen">
       <div class="success-wrap">
-        <div class="big-emoji">🥂</div>
+        <div class="big-emoji" id="success-emoji">🍺</div>
         <div class="eyebrow">S Sekretariat hät Dini gschätzti Aamäldig übercho. Das isch de Guet!!</div>
         <h1>Paris, Athen, auf Wiedersehn!</h1>
         <div class="ornament"><span class="ornament-inner">✦</span></div>
@@ -432,7 +430,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.010</div>
+<div class="version-tag">CLv0.011</div>
 
 <script>
   const PASSWORD        = '69Bier';
@@ -488,7 +486,7 @@
   function selectRsvp(choice) {
     currentRsvp = choice;
     if (choice !== 'a' && choice !== 'b') {
-      document.getElementById('absage-nametext').textContent = fullName();
+      document.getElementById('absage-h1').textContent = userName.vorname + ' ' + userName.nachname + ', dini Abmäldig hämmer zur Kentniss gnoh. Mr werdeds nöd vergässe.';
       showScreen('screen-absage');
       return;
     }
@@ -529,6 +527,7 @@
     };
     try {
       await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      document.getElementById('success-emoji').textContent = currentRsvp === 'b' ? '🍻' : '🍺';
       document.getElementById('success-msg').textContent = currentRsvp === 'b'
         ? `Bis am 26.09. im Lindehofchäller! Vergiss Dini Begleitig nöd Dihei!`
         : `Bis am 26.09. im Lindehofchäller!`;
