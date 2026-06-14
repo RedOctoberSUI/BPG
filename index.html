@@ -207,6 +207,40 @@
       font-size: 0.6rem; color: var(--border); pointer-events: none; letter-spacing: 0.1em;
     }
 
+    /* Info block */
+    .info-block {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.3rem 1.4rem;
+      margin-bottom: 0;
+    }
+    .info-title {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    }
+    .info-grid { display: flex; flex-direction: column; gap: 0.55rem; }
+    .info-row { display: flex; gap: 0.8rem; align-items: baseline; }
+    .info-key {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gold-dim);
+      min-width: 60px; flex-shrink: 0;
+    }
+    .info-val { font-size: 0.9rem; color: var(--ink); line-height: 1.4; }
+    .info-addr { font-size: 0.8rem; color: var(--ink-soft); }
+    .maps-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1rem; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 0.35rem 0.9rem;
+      transition: background var(--trans), color var(--trans);
+    }
+    .maps-link:hover { background: var(--gold); color: var(--bg); }
+
+    /* RSVP nope style */
+    .rsvp-btn-nope { opacity: 0.7; }
+    .rsvp-btn-nope:hover { opacity: 1; }
+
     /* Bier row */
     .bier-row {
       display: flex; align-items: center; gap: 0.6rem;
@@ -265,21 +299,53 @@
     <!-- ══ SCREEN 3: RSVP ══ -->
     <div id="screen-rsvp" class="screen">
       <div class="eyebrow">Deine Antwort</div>
-      <h1>Kannst du kommen?</h1>
+      <h1>Chunsch au?</h1>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
       <div class="name-pill">👤 <span id="rsvp-nametext"></span></div>
+
+      <!-- Info block -->
+      <div class="info-block">
+        <div class="info-title">Informationen zum Anlass</div>
+        <div class="info-grid">
+          <div class="info-row"><span class="info-key">Was</span><span class="info-val">Bier und Spass mit Pippo</span></div>
+          <div class="info-row"><span class="info-key">Wieso</span><span class="info-val">Philipp wird 30sgi</span></div>
+          <div class="info-row"><span class="info-key">Warum</span><span class="info-val">Will er am 21. Sept 1996 gschlüpft isch.</span></div>
+          <div class="info-row"><span class="info-key">Wänn</span><span class="info-val">26. September 2026</span></div>
+          <div class="info-row"><span class="info-key">Ziit</span><span class="info-val">Ab 14:00 bis lääääääär</span></div>
+          <div class="info-row"><span class="info-key">Wo</span><span class="info-val">Lindenhofkeller<br><span class="info-addr">Pfalzgasse 4, 8001 Zürich</span></span></div>
+          <div class="info-row"><span class="info-key">Mitnäh</span><span class="info-val">Gueti Luune und ghörig durscht.</span></div>
+        </div>
+        <a class="maps-link" href="https://maps.google.com/?q=Lindenhofkeller,+Pfalzgasse+4,+8001+Zürich" target="_blank">
+          <span>📍</span> Auf Google Maps öffnen
+        </a>
+      </div>
+
+      <div class="ornament"><span class="ornament-inner">✦</span></div>
+
       <div class="rsvp-options">
         <button class="rsvp-btn" onclick="selectRsvp('a')">
-          <span class="rsvp-icon">🎉</span>
-          <div><div class="rsvp-label">Ja, ich komme gerne</div><div class="rsvp-sub">Ich bin dabei – solo.</div></div>
+          <span class="rsvp-icon">🍺</span>
+          <div><div class="rsvp-label">Ja, ich han durscht.</div><div class="rsvp-sub">Ich bin dabei – solo.</div></div>
         </button>
         <button class="rsvp-btn" onclick="selectRsvp('b')">
-          <span class="rsvp-icon">👫</span>
-          <div><div class="rsvp-label">Ja, ich komme gerne mit Begleitung</div><div class="rsvp-sub">Ich bringe jemanden mit.</div></div>
+          <span class="rsvp-icon">🍻</span>
+          <div><div class="rsvp-label">Ja, ich han durscht und mini Begleitig au!</div><div class="rsvp-sub">Ich bringe jemanden mit.</div></div>
         </button>
-        <button class="rsvp-btn" onclick="selectRsvp('c')">
-          <span class="rsvp-icon">😔</span>
-          <div><div class="rsvp-label">Nein, ich habe keine Zeit und Lust mehr Zeit mit dir zu verbringen</div><div class="rsvp-sub">Schade, vielleicht ein anderes Mal.</div></div>
+        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c1')">
+          <span class="rsvp-icon">😐</span>
+          <div><div class="rsvp-label">Nei, ich han Bier nöd so gern.</div></div>
+        </button>
+        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c2')">
+          <span class="rsvp-icon">😒</span>
+          <div><div class="rsvp-label">Nei, ich bin langwiilig und weiss noni genau was Spass isch.</div></div>
+        </button>
+        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c3')">
+          <span class="rsvp-icon">🙅</span>
+          <div><div class="rsvp-label">Nei, ich han würkli nöd gern Bier. Also eifach gar nöd!</div></div>
+        </button>
+        <button class="rsvp-btn rsvp-btn-nope" onclick="selectRsvp('c4')">
+          <span class="rsvp-icon">🚂</span>
+          <div><div class="rsvp-label">Nei, d Reis an Mittelpunkt vom Universum (also s schöne Züri) isch mr z wiit. Ich ha keis GA.</div></div>
         </button>
       </div>
     </div>
@@ -351,7 +417,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.005</div>
+<div class="version-tag">CLv0.006</div>
 
 <script>
   const PASSWORD        = '69Bier';
@@ -395,7 +461,7 @@
 
   function selectRsvp(choice) {
     currentRsvp = choice;
-    if (choice === 'c') {
+    if (choice !== 'a' && choice !== 'b') {
       document.getElementById('absage-nametext').textContent = fullName();
       showScreen('screen-absage');
       return;
@@ -426,7 +492,7 @@
     btn.innerHTML = '<span><span class="spinner"></span>Wird gesendet…</span>';
 
     const payload = {
-      typ: currentRsvp === 'a' ? 'Solo' : 'Mit Begleitung',
+      typ: currentRsvp === 'a' ? 'Solo' : currentRsvp === 'b' ? 'Mit Begleitung' : 'Absage',
       vorname: userName.vorname, nachname: userName.nachname,
       email: val('f-email'), tel: val('f-tel'),
       b_vorname: currentRsvp === 'b' ? val('f-b-vorname') : '',
