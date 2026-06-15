@@ -248,7 +248,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.015</span>
+      <span class="topbar-version">CLv0.016</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -375,7 +375,7 @@
     const personen   = total + begleitung;
     const absagen    = allRows.filter(r => r.typ === 'Absage').length;
     // Bier: based on current filter (filteredRows), excluding Absagen
-    const bierRows   = (filteredRows || anmeldungen).filter(r => r.typ !== 'Absage');
+    const bierRows   = filteredRows || anmeldungen;
     const bierTotal  = bierRows.reduce((sum, r) => sum + (parseInt(r.bier) || 0), 0);
     const bierLabel  = filteredRows ? `🍺 Bier (${document.getElementById('filter-typ').value || 'Alle'})` : '🍺 Bier total';
     document.getElementById('count-badge').textContent = total;
@@ -563,6 +563,6 @@
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.015</div>
+<div class="version-tag">CLv0.016</div>
 </body>
 </html>
