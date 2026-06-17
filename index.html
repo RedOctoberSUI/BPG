@@ -219,7 +219,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()">Weiter</button>
-      <div class="pw-footer">CLv0.019 · © Pippos Lustige Hundeshow</div>
+      <div class="pw-footer">CLv0.020 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -334,7 +334,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.019</div>
+<div class="version-tag">CLv0.020</div>
 
 <script>
   const PASSWORD        = '69Bier';
@@ -463,11 +463,7 @@
     };
     try {
       await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-      showScreen('screen-success');
-      document.getElementById('success-emoji').textContent = '👋';
-      document.getElementById('success-msg').textContent = 'Schad! Vielicht s nöchste Mal.';
-      document.querySelector('.eyebrow').textContent = 'Abmäldig bestätigt';
-      document.getElementById('screen-success').querySelector('h1').textContent = 'Tschüss!';
+      window.location.href = 'https://www.pampers.com';
     } catch(e) {
       btn.disabled = false; btn.innerHTML = 'Absenden';
       err.textContent = 'Fehler beim Senden. Bitte nochmals versuchen.';
