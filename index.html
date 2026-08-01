@@ -11,21 +11,43 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #f5f2ec;
-      --surface:    #ffffff;
-      --ink:        #1c2b1e;
-      --ink-soft:   #5a6b5c;
-      --green:      #2d4a30;
-      --green-mid:  #4a7a4e;
-      --green-light:#e8f0e8;
-      --green-dim:  rgba(45,74,48,0.15);
-      --border:     #d8ddd8;
-      --border-soft:#e8ebe8;
+      --bg:         #f3e3c3;
+      --surface:    #fdf8ee;
+      --ink:        #2b1c10;
+      --ink-soft:   #6e5a42;
+      --green:      #7a5220;
+      --green-mid:  #a3752f;
+      --green-light:#f7ecd6;
+      --green-dim:  rgba(122,82,32,0.15);
+      --border:     #e3cd9c;
+      --border-soft:#f0e2bd;
       --radius:     2px;
       --trans:      0.3s ease;
     }
 
-    html, body { height: 100%; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; }
+    html, body { height: 100%; color: var(--ink); font-family: 'Jost', sans-serif; font-weight: 300; }
+
+    body {
+      background:
+        radial-gradient(circle at 12% 8%,  rgba(255,255,255,0.55) 0px, rgba(255,255,255,0.55) 3px, transparent 4px),
+        radial-gradient(circle at 28% 4%,  rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 5px, transparent 6px),
+        radial-gradient(circle at 46% 12%, rgba(255,255,255,0.5) 0px, rgba(255,255,255,0.5) 3px, transparent 4px),
+        radial-gradient(circle at 64% 6%,  rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 6px, transparent 7px),
+        radial-gradient(circle at 82% 10%, rgba(255,255,255,0.5) 0px, rgba(255,255,255,0.5) 4px, transparent 5px),
+        radial-gradient(circle at 93% 20%, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 3px, transparent 4px),
+        radial-gradient(circle at 6% 30%,  rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 4px, transparent 5px),
+        radial-gradient(circle at 20% 45%, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 6px, transparent 7px),
+        radial-gradient(circle at 90% 45%, rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 5px, transparent 6px),
+        radial-gradient(circle at 8% 65%,  rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 4px, transparent 5px),
+        radial-gradient(circle at 94% 68%, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 4px, transparent 5px),
+        radial-gradient(circle at 15% 85%, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 5px, transparent 6px),
+        radial-gradient(circle at 85% 88%, rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 4px, transparent 5px),
+        radial-gradient(circle at 50% 95%, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 5px, transparent 6px),
+        radial-gradient(ellipse at 50% 0%, rgba(255,247,220,0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, #e8c887 0%, transparent 60%),
+        linear-gradient(180deg, #f7e6bd 0%, #f0d9a3 45%, #e8c887 100%);
+      background-attachment: fixed;
+    }
 
     body::before {
       content: '';
@@ -219,7 +241,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()">wiiter gahts da</button>
-      <div class="pw-footer">CLv0.023 · © Pippos Lustige Hundeshow</div>
+      <div class="pw-footer">CLv0.024 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -332,7 +354,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.023</div>
+<div class="version-tag">CLv0.024</div>
 
 <script>
   const PASSWORD        = '69Bier';
