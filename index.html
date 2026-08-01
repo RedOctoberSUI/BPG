@@ -219,7 +219,7 @@
       <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password" />
       <div class="error-msg" id="pw-error" style="display:none">Falsches Passwort. Versuch's nochmal.</div>
       <button class="btn-primary" onclick="checkPassword()">wiiter gahts da</button>
-      <div class="pw-footer">CLv0.022 · © Pippos Lustige Hundeshow</div>
+      <div class="pw-footer">CLv0.023 · © Pippos Lustige Hundeshow</div>
     </div>
 
     <!-- ══ SCREEN 2: Name ══ -->
@@ -235,7 +235,7 @@
       <div class="bier-row">
         <span class="bier-label">Ich trinke a dem Abig</span>
         <input type="number" id="n-bier" min="0" max="999" placeholder="0" class="bier-input" />
-        <span class="bier-label">Stange Bier. Versproche!</span>
+        <span class="bier-label">0.5L Bier. Versproche!</span>
       </div>
       <div class="error-msg" id="name-error" style="display:none">Isch das din volle Ernscht? Du chasch din Name nöd schriibe oder trinksch 0 Bier? Vollpfoschte! Machs nomal....</div>
       <button class="btn-primary" onclick="submitName()">wiiter gahts da</button>
@@ -251,7 +251,7 @@
       <div class="info-block">
         <div class="info-title">Informatione zum Aalass</div>
         <div class="info-grid">
-          <div class="info-row"><span class="info-key">Was</span><span class="info-val">Bier und Spass mit Pippo</span></div>
+          <div class="info-row"><span class="info-key">Was</span><span class="info-val">Bier und Spass mit Philipp</span></div>
           <div class="info-row"><span class="info-key">Wieso</span><span class="info-val">Philipp wird 30sgi</span></div>
           <div class="info-row"><span class="info-key">Warum</span><span class="info-val">Will er am 21. Sept 1996 gschlüpft isch.</span></div>
           <div class="info-row"><span class="info-key">Wänn</span><span class="info-val">26. September 2026</span></div>
@@ -269,12 +269,10 @@
       <label for="rsvp-select">Mini Antwort</label>
       <select id="rsvp-select" onchange="previewRsvp()">
         <option value="">– Bitte wählen –</option>
-        <option value="a">🍺  Ja, ich han durscht.</option>
-        <option value="b">🍻  Ja, ich han durscht und mini Begleitig au!</option>
-        <option value="c1">😐  Nei, ich han Bier nöd so gern.</option>
-        <option value="c2">😒  Nei, ich bin langwiilig und weiss noni genau was Spass isch.</option>
-        <option value="c3">🙅  Nei, ich han würkli nöd gern Bier. Also eifach gar nöd!</option>
-        <option value="c4">🚂  Nei, d Reis an Mittelpunkt vom Universum (also s schöne Züri) isch mr z wiit. Ich ha keis GA.</option>
+        <option value="a">Ja, ich han durscht.</option>
+        <option value="b">Ja, ich han durscht und mini Begleitig au!</option>
+        <option value="c1">Nei, ich han Bier nöd so gern.</option>
+        <option value="c4">Nei, d Reis an Mittelpunkt vom Universum (also s schöne Züri) isch mr z wiit. Ich ha keis GA.</option>
       </select>
       <div class="error-msg" id="rsvp-error" style="display:none">Bitte eine Antwort wählen.</div>
       <button class="btn-primary" onclick="confirmRsvp()">wiiter gahts da</button>
@@ -284,7 +282,7 @@
     <div id="screen-form" class="screen">
       <div class="eyebrow" id="form-eyebrow">Aamäldig</div>
       <h1 id="form-h1">Dini Informatione</h1>
-      <p class="subtitle" id="form-subtitle">Isch wükli wichtig, sus bisch nöd uf de VIP supersecret Gäschtelischte!</p>
+      <p class="subtitle" id="form-subtitle"></p>
       <div class="ornament"><span class="ornament-inner">✦</span></div>
       <div class="name-pill">👤 <span id="form-nametext"></span></div>
 
@@ -334,7 +332,7 @@
   </div>
 </div>
 
-<div class="version-tag">CLv0.022</div>
+<div class="version-tag">CLv0.023</div>
 
 <script>
   const PASSWORD        = '69Bier';
@@ -400,7 +398,7 @@
     document.getElementById('form-h1').textContent = choice === 'b' ? 'Eui Informationen' : 'Dini Informatione';
     document.getElementById('form-subtitle').textContent = choice === 'b'
       ? 'Isch wüklich wichtig, sus sinder nöd uf de VIP Gäschtelischte!'
-      : 'Isch wükli wichtig, sus bisch nöd uf de VIP supersecret Gäschtelischte!';
+      : '';
     showScreen('screen-form');
   }
 
@@ -463,7 +461,7 @@
     };
     try {
       await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-      window.location.href = 'https://www.pampers.com';
+      window.location.href = 'https://bierbewusstgeniessen.de';
     } catch(e) {
       btn.disabled = false; btn.innerHTML = 'Absenden';
       err.textContent = 'Fehler beim Senden. Bitte nochmals versuchen.';
