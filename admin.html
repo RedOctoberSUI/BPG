@@ -88,7 +88,7 @@
     }
     .icon-btn:hover { background: rgba(255,255,255,0.2); }
 
-    .main { flex: 1; padding: 1.5rem; overflow-x: auto; }
+    .main { flex: 1; padding: 1.5rem; overflow-x: hidden; max-width: 100vw; }
 
     /* ── Stats bar ── */
     .stats-bar { display: flex; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
@@ -127,8 +127,13 @@
     .btn-add-abmeldung:hover { background: #c0392b; color: #fff; }
 
     /* ── Table ── */
-    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow-x: auto; overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+    }
+    table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: 0.875rem; }
     thead tr { background: var(--gold); color: #fff; border-bottom: 1px solid var(--gold); }
     th {
       padding: 0.75rem 0.9rem; text-align: left;
@@ -221,9 +226,18 @@
     }
 
     @media (max-width: 600px) {
+      html, body { overflow-x: hidden; }
+      .topbar { padding: 0 0.9rem; flex-wrap: wrap; height: auto; min-height: var(--header-h); gap: 0.5rem; }
       .topbar-title { font-size: 1rem; }
+      .topbar-actions { gap: 0.4rem; }
+      .icon-btn { padding: 0.4rem 0.6rem; font-size: 0.68rem; }
+      .main { padding: 0.9rem; }
+      .stats-bar { gap: 0.6rem; }
+      .stat-card { min-width: 100px; padding: 0.7rem 0.9rem; }
+      .stat-val { font-size: 1.5rem; }
       th, td { padding: 0.55rem 0.6rem; font-size: 0.8rem; }
       .modal-grid { grid-template-columns: 1fr; }
+      .modal { padding: 1.4rem; }
     }
   </style>
 </head>
@@ -247,7 +261,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.027</span>
+      <span class="topbar-version">CLv0.028</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -564,6 +578,6 @@
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.027</div>
+<div class="version-tag">CLv0.028</div>
 </body>
 </html>
