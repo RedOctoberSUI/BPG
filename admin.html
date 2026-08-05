@@ -261,7 +261,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.032</span>
+      <span class="topbar-version">CLv0.033</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -376,9 +376,16 @@
   }
 
   // ── Load data ─────────────────────────────────────────
-  async function loadData() {
-    document.getElementById('table-container').innerHTML =
-      '<div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>';
+  async function loadData(isRetry) {
+    const hasExisting = allRows.length > 0;
+    // Keep old table visible while refreshing; only show full-screen spinner on first load
+    if (!hasExisting) {
+      document.getElementById('table-container').innerHTML =
+        '<div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>';
+    } else {
+      const refreshBtn = document.querySelector('.icon-btn[onclick^="loadData"]');
+      if (refreshBtn) { refreshBtn.dataset.orig = refreshBtn.dataset.orig || refreshBtn.innerHTML; refreshBtn.innerHTML = '<span class="spinner"></span>Lädt…'; }
+    }
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 35000);
     try {
@@ -389,14 +396,27 @@
       allRows = json.rows || [];
       renderStats();
       applyFilter();
+      const refreshBtn = document.querySelector('.icon-btn[data-orig]');
+      if (refreshBtn) { refreshBtn.innerHTML = refreshBtn.dataset.orig; }
     } catch(e) {
       clearTimeout(timeoutId);
+      // Auto-retry once, silently, before showing an error (handles brief Apps Script lock contention)
+      if (!isRetry) {
+        setTimeout(() => loadData(true), 2000);
+        return;
+      }
       const msg = e.name === 'AbortError'
         ? 'Zeitüberschreitung – der Server hat nicht rechtzeitig geantwortet.'
         : e.message;
-      document.getElementById('table-container').innerHTML =
-        '<div class="empty-state">⚠️ Fehler beim Laden.<br><small>' + msg + '</small><br><br>' +
-        '<button class="icon-btn" style="background:var(--gold);color:#fff;margin-top:0.5rem" onclick="loadData()">↻ Nochmal versuchen</button></div>';
+      if (!hasExisting) {
+        document.getElementById('table-container').innerHTML =
+          '<div class="empty-state">⚠️ Fehler beim Laden.<br><small>' + msg + '</small><br><br>' +
+          '<button class="icon-btn" style="background:var(--gold);color:#fff;margin-top:0.5rem" onclick="loadData()">↻ Nochmal versuchen</button></div>';
+      } else {
+        const refreshBtn = document.querySelector('.icon-btn[data-orig]');
+        if (refreshBtn) { refreshBtn.innerHTML = refreshBtn.dataset.orig; }
+        alert('Aktualisieren fehlgeschlagen: ' + msg);
+      }
     }
   }
 
@@ -641,6 +661,6 @@
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.032</div>
+<div class="version-tag">CLv0.033</div>
 </body>
 </html>
