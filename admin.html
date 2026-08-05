@@ -261,7 +261,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.030</span>
+      <span class="topbar-version">CLv0.031</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -305,12 +305,23 @@
   <div class="modal">
     <div class="modal-title">Anmeldung bearbeiten</div>
     <div class="modal-grid">
+      <div class="full"><label for="m-typ">Typ</label>
+        <select id="m-typ" onchange="onTypChange()">
+          <option value="Solo">Solo</option>
+          <option value="Mit Begleitung">Mit Begleitung</option>
+          <option value="Absage">Absage</option>
+        </select>
+      </div>
       <div><label for="m-vorname">Vorname</label><input type="text" id="m-vorname" /></div>
       <div><label for="m-nachname">Nachname</label><input type="text" id="m-nachname" /></div>
       <div><label for="m-email">E-Mail</label><input type="email" id="m-email" /></div>
       <div><label for="m-tel">Telefon</label><input type="tel" id="m-tel" /></div>
-      <div><label for="m-b-vorname">Begl. Vorname</label><input type="text" id="m-b-vorname" /></div>
-      <div><label for="m-b-nachname">Begl. Nachname</label><input type="text" id="m-b-nachname" /></div>
+      <div class="full" id="m-companion-fields" style="display:none">
+        <div class="modal-grid" style="padding:0">
+          <div><label for="m-b-vorname">Begl. Vorname</label><input type="text" id="m-b-vorname" /></div>
+          <div><label for="m-b-nachname">Begl. Nachname</label><input type="text" id="m-b-nachname" /></div>
+        </div>
+      </div>
       <div class="full"><label for="m-kommentar">Kommentar</label><textarea id="m-kommentar"></textarea></div>
     </div>
     <div class="modal-actions">
@@ -508,9 +519,12 @@
   }
 
   // ── Edit Modal ────────────────────────────────────────
+  let editPrevTyp = null;
+
   function openEdit(idx) {
     editRowIdx = idx;
     const r = allRows[idx];
+    document.getElementById('m-typ').value        = r.typ        || 'Solo';
     document.getElementById('m-vorname').value    = r.vorname    || '';
     document.getElementById('m-nachname').value   = r.nachname   || '';
     document.getElementById('m-email').value      = r.email      || '';
@@ -518,7 +532,26 @@
     document.getElementById('m-b-vorname').value  = r.b_vorname  || '';
     document.getElementById('m-b-nachname').value = r.b_nachname || '';
     document.getElementById('m-kommentar').value  = r.kommentar  || '';
+    editPrevTyp = r.typ || 'Solo';
+    document.getElementById('m-companion-fields').style.display = (r.typ === 'Mit Begleitung') ? 'block' : 'none';
     document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function onTypChange() {
+    const sel = document.getElementById('m-typ');
+    const newTyp = sel.value;
+    const bVn = document.getElementById('m-b-vorname').value.trim();
+    const bNn = document.getElementById('m-b-nachname').value.trim();
+
+    if (editPrevTyp === 'Mit Begleitung' && newTyp !== 'Mit Begleitung' && (bVn || bNn)) {
+      const ok = confirm('Willst du wirklich die Begleitung löschen?');
+      if (!ok) { sel.value = 'Mit Begleitung'; return; }
+      document.getElementById('m-b-vorname').value = '';
+      document.getElementById('m-b-nachname').value = '';
+    }
+
+    editPrevTyp = newTyp;
+    document.getElementById('m-companion-fields').style.display = (newTyp === 'Mit Begleitung') ? 'block' : 'none';
   }
 
   function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editRowIdx = null; }
@@ -528,6 +561,7 @@
     const r = allRows[editRowIdx];
     const updated = { ...r,
       source:     r.source || 'form',
+      typ:        document.getElementById('m-typ').value,
       vorname:    document.getElementById('m-vorname').value.trim(),
       nachname:   document.getElementById('m-nachname').value.trim(),
       email:      document.getElementById('m-email').value.trim(),
@@ -587,6 +621,6 @@
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
 </script>
-<div class="version-tag">CLv0.030</div>
+<div class="version-tag">CLv0.031</div>
 </body>
 </html>
