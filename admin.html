@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -239,7 +243,92 @@
       th, td { padding: 0.55rem 0.6rem; font-size: 0.8rem; }
       .modal-grid { grid-template-columns: 1fr; }
       .modal { padding: 1.4rem; }
+      .charts-grid { grid-template-columns: 1fr !important; }
     }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex; gap: 0.3rem; padding: 0.6rem 1.5rem 0;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 0.7rem 1.1rem; font-family: 'Jost', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-soft); border-bottom: 2px solid transparent;
+      transition: color var(--trans), border-color var(--trans);
+    }
+    .tab-btn:hover { color: var(--gold); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    @media (max-width: 600px) {
+      .tab-bar { padding: 0.5rem 0.9rem 0; overflow-x: auto; }
+      .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.7rem; white-space: nowrap; }
+    }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400;
+      color: var(--ink); margin: 1.8rem 0 1rem; padding-top: 0.2rem; border-top: 1px solid var(--border-soft);
+    }
+    .section-title:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* ── Charts ── */
+    .charts-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.5rem;
+    }
+    .chart-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+    }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-card-title {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 0.8rem;
+    }
+    .chart-card canvas { max-height: 240px; }
+
+    /* ── KPI cards ── */
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    }
+    .kpi-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+    }
+    .kpi-card-title {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 0.7rem;
+    }
+    .kpi-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.3rem 0; font-size: 0.88rem; }
+    .kpi-row + .kpi-row { border-top: 1px solid var(--border-soft); }
+    .kpi-row .kpi-name { color: var(--ink); }
+    .kpi-row .kpi-val { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); }
+    .kpi-medal { margin-right: 0.4rem; }
+    .kpi-big { text-align: center; padding: 0.5rem 0; }
+    .kpi-big .kpi-val { font-size: 2.2rem; display: block; margin-bottom: 0.2rem; }
+    .kpi-big .kpi-sub { font-size: 0.78rem; color: var(--ink-soft); }
+    .kpi-split { display: flex; justify-content: space-around; text-align: center; }
+    .kpi-split .kpi-val { font-size: 1.6rem; display: block; }
+    .kpi-split .kpi-sub { font-size: 0.72rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── Export tab ── */
+    .export-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+    .export-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.6rem;
+    }
+    .export-card-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ink); margin-bottom: 0.5rem; }
+    .export-card-desc { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 1.2rem; }
+    .export-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold); color: #fff; border: none; border-radius: var(--radius);
+      padding: 0.7rem 1.3rem; font-family: 'Jost', sans-serif; font-size: 0.78rem;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: background var(--trans);
+    }
+    .export-btn:hover { background: var(--gold-dim); }
   </style>
 </head>
 <body>
@@ -262,7 +351,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.034</span>
+      <span class="topbar-version">CLv0.035</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -271,34 +360,92 @@
     </div>
   </div>
 
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-btn-statistik" onclick="switchTab('statistik')">Statistik</button>
+    <button class="tab-btn" id="tab-btn-anmeldungen" onclick="switchTab('anmeldungen')">Anmeldungen</button>
+    <button class="tab-btn" id="tab-btn-exporte" onclick="switchTab('exporte')">Datenexporte</button>
+  </div>
+
   <div class="main">
-    <!-- Stats -->
-    <div class="stats-bar" id="stats-bar"></div>
 
-    <!-- Abmeldungen -->
-    <div class="abmeldungen-bar">
-      <button class="btn-add-abmeldung" onclick="openAbmeldungModal()">+ Abmeldung erfassen</button>
+    <!-- ══ TAB: Statistik ══ -->
+    <div class="tab-content active" id="tab-statistik">
+      <div class="stats-bar" id="stats-bar"></div>
+
+      <div class="section-title">Verteilung</div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-title">Zusagen vs. Absagen</div>
+          <canvas id="chart-zusagen-absagen"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Solo vs. Mit Begleitung</div>
+          <canvas id="chart-solo-begleitung"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Bier-Verteilung</div>
+          <canvas id="chart-bier-hist"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Anmeldungen über Zeit</div>
+          <canvas id="chart-zeit"></canvas>
+        </div>
+      </div>
+
+      <div class="section-title">KPIs</div>
+      <div class="kpi-grid" id="kpi-grid"></div>
     </div>
 
-    <!-- Filter -->
-    <div class="filter-bar">
-      <span class="filter-label">Filter:</span>
-      <select id="filter-typ" onchange="applyFilter()">
-        <option value="">Alle Typen</option>
-        <option value="Solo">Solo</option>
-        <option value="Mit Begleitung">Mit Begleitung</option>
-        <option value="Absage">Absage</option>
-      </select>
-      <input type="text" id="filter-search" placeholder="Suche nach Name…" oninput="applyFilter()" style="max-width:220px" />
-      <button class="filter-reset" onclick="resetFilter()">✕ Zurücksetzen</button>
-    </div>
+    <!-- ══ TAB: Anmeldungen ══ -->
+    <div class="tab-content" id="tab-anmeldungen">
+      <!-- Abmeldungen -->
+      <div class="abmeldungen-bar">
+        <button class="btn-add-abmeldung" onclick="openAbmeldungModal()">+ Abmeldung erfassen</button>
+      </div>
 
-    <!-- Table -->
-    <div class="table-wrap">
-      <div id="table-container">
-        <div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>
+      <!-- Filter -->
+      <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        <select id="filter-typ" onchange="applyFilter()">
+          <option value="">Alle Typen</option>
+          <option value="Solo">Solo</option>
+          <option value="Mit Begleitung">Mit Begleitung</option>
+          <option value="Absage">Absage</option>
+        </select>
+        <input type="text" id="filter-search" placeholder="Suche nach Name…" oninput="applyFilter()" style="max-width:220px" />
+        <button class="filter-reset" onclick="resetFilter()">✕ Zurücksetzen</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <div id="table-container">
+          <div class="spinner-wrap"><span class="spinner"></span>Lade Daten…</div>
+        </div>
       </div>
     </div>
+
+    <!-- ══ TAB: Datenexporte ══ -->
+    <div class="tab-content" id="tab-exporte">
+      <div class="export-grid">
+        <div class="export-card">
+          <div class="export-card-title">📊 Excel-Export</div>
+          <div class="export-card-desc">
+            Rohe Liste aller Zusagen (Solo + Mit Begleitung), alphabetisch nach Nachname sortiert.
+            Spalten: Anzahl, Name, Gast-Name, Kommentar.
+          </div>
+          <button class="export-btn" onclick="exportXLS()">⬇ Als .xlsx herunterladen</button>
+        </div>
+        <div class="export-card">
+          <div class="export-card-title">🖨 PDF für Türsteher</div>
+          <div class="export-card-desc">
+            Gleiche Liste, mit Checkboxen zum Ankreuzen (2 Boxen bei Begleitung).
+            Zusätzlich 20 leere Zeilen am Ende für spontane Gäste.
+          </div>
+          <button class="export-btn" onclick="exportPDF()">⬇ Als .pdf herunterladen</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -397,6 +544,8 @@
       allRows = json.rows || [];
       renderStats();
       applyFilter();
+      const activeTab = document.querySelector('.tab-content.active');
+      if (activeTab && activeTab.id === 'tab-statistik') renderStatsTab();
       const refreshBtn = document.querySelector('.icon-btn[data-orig]');
       if (refreshBtn) { refreshBtn.innerHTML = refreshBtn.dataset.orig; }
     } catch(e) {
@@ -661,7 +810,219 @@
     } catch(e) { alert('Fehler: ' + e.message); }
     finally { btn.textContent = 'Speichern'; btn.disabled = false; }
   }
+
+  // ── Tabs ──────────────────────────────────────────────
+  function switchTab(name) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('tab-btn-' + name).classList.add('active');
+    if (name === 'statistik') renderStatsTab();
+  }
+
+  // ── Statistik Tab: Charts + KPIs ────────────────────────
+  let charts = {};
+  const GOLD = '#7a5220', GOLD_DIM = '#a3752f', GOLD_LIGHT = '#e3cd9c', RED = '#c0392b', RED_LIGHT = '#f5c6c6';
+
+  function parseDateKey(ts) {
+    if (!ts) return null;
+    const m = String(ts).match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+    if (!m) return null;
+    const [, d, mo, y] = m;
+    return { key: `${d.padStart(2,'0')}.${mo.padStart(2,'0')}.${y}`, sortVal: new Date(+y, +mo - 1, +d).getTime() };
+  }
+
+  function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+  function renderStatsTab() {
+    const confirmed = allRows.filter(r => r.typ !== 'Absage');
+    const absagen   = allRows.filter(r => r.typ === 'Absage');
+    const solo      = confirmed.filter(r => r.typ === 'Solo');
+    const begleitung= confirmed.filter(r => r.typ === 'Mit Begleitung');
+
+    // ── Donut: Zusagen vs Absagen ──
+    destroyChart('za');
+    charts['za'] = new Chart(document.getElementById('chart-zusagen-absagen'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Zusagen', 'Absagen'],
+        datasets: [{ data: [confirmed.length, absagen.length], backgroundColor: [GOLD, RED_LIGHT], borderColor: '#fdf8ee', borderWidth: 2 }]
+      },
+      options: { plugins: { legend: { position: 'bottom', labels: { font: { family: 'Jost' }, color: '#2b1c10' } } } }
+    });
+
+    // ── Donut: Solo vs Begleitung ──
+    destroyChart('sb');
+    charts['sb'] = new Chart(document.getElementById('chart-solo-begleitung'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Solo', 'Mit Begleitung'],
+        datasets: [{ data: [solo.length, begleitung.length], backgroundColor: [GOLD_LIGHT, GOLD], borderColor: '#fdf8ee', borderWidth: 2 }]
+      },
+      options: { plugins: { legend: { position: 'bottom', labels: { font: { family: 'Jost' }, color: '#2b1c10' } } } }
+    });
+
+    // ── Histogram: Bier-Verteilung ──
+    const bierCounts = {};
+    confirmed.forEach(r => { const b = parseInt(r.bier) || 0; bierCounts[b] = (bierCounts[b]||0) + 1; });
+    const bierKeys = Object.keys(bierCounts).map(Number).sort((a,b) => a-b);
+    destroyChart('bh');
+    charts['bh'] = new Chart(document.getElementById('chart-bier-hist'), {
+      type: 'bar',
+      data: {
+        labels: bierKeys.map(k => k + ' 🍺'),
+        datasets: [{ label: 'Personen', data: bierKeys.map(k => bierCounts[k]), backgroundColor: GOLD }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // ── Line: Anmeldungen über Zeit ──
+    const byDate = {};
+    confirmed.forEach(r => {
+      const dk = parseDateKey(r.timestamp);
+      if (!dk) return;
+      if (!byDate[dk.key]) byDate[dk.key] = { count: 0, bier: 0, sortVal: dk.sortVal };
+      byDate[dk.key].count++;
+      byDate[dk.key].bier += parseInt(r.bier) || 0;
+    });
+    const dateEntries = Object.entries(byDate).sort((a,b) => a[1].sortVal - b[1].sortVal);
+    destroyChart('zeit');
+    charts['zeit'] = new Chart(document.getElementById('chart-zeit'), {
+      type: 'line',
+      data: {
+        labels: dateEntries.map(e => e[0]),
+        datasets: [{ label: 'Anmeldungen', data: dateEntries.map(e => e[1].count), borderColor: GOLD, backgroundColor: 'rgba(122,82,32,0.12)', fill: true, tension: 0.25 }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+    });
+
+    // ── KPIs ──
+    const avgBierSolo = solo.length ? (solo.reduce((s,r) => s + (parseInt(r.bier)||0), 0) / solo.length) : 0;
+    const avgBierBegl = begleitung.length ? (begleitung.reduce((s,r) => s + (parseInt(r.bier)||0), 0) / begleitung.length) : 0;
+    const mitKommentar = confirmed.filter(r => (r.kommentar||'').trim() !== '').length;
+    const ohneKommentar = confirmed.length - mitKommentar;
+
+    const topDurst = [...confirmed].sort((a,b) => (parseInt(b.bier)||0) - (parseInt(a.bier)||0)).slice(0, 5);
+    const medals = ['🥇','🥈','🥉','4.','5.'];
+
+    const top3Anmeldungen = dateEntries.slice().sort((a,b) => b[1].count - a[1].count).slice(0, 3);
+    const top3Bier = dateEntries.slice().sort((a,b) => b[1].bier - a[1].bier).slice(0, 3);
+
+    let topday = null;
+    if (dateEntries.length) {
+      const maxCount = Math.max(...dateEntries.map(e => e[1].count));
+      const maxBier  = Math.max(...dateEntries.map(e => e[1].bier));
+      topday = dateEntries.reduce((best, e) => {
+        const score = (maxCount ? e[1].count / maxCount : 0) + (maxBier ? e[1].bier / maxBier : 0);
+        return (!best || score > best.score) ? { date: e[0], count: e[1].count, bier: e[1].bier, score } : best;
+      }, null);
+    }
+
+    document.getElementById('kpi-grid').innerHTML = `
+      <div class="kpi-card">
+        <div class="kpi-card-title">Ø Bier: Solo vs. Begleitung</div>
+        <div class="kpi-split">
+          <div><span class="kpi-val">${avgBierSolo.toFixed(1)}</span><span class="kpi-sub">Solo</span></div>
+          <div><span class="kpi-val">${avgBierBegl.toFixed(1)}</span><span class="kpi-sub">Begleitung</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card-title">Kommentare</div>
+        <div class="kpi-split">
+          <div><span class="kpi-val">${mitKommentar}</span><span class="kpi-sub">Mit Kommentar</span></div>
+          <div><span class="kpi-val">${ohneKommentar}</span><span class="kpi-sub">Ohne Kommentar</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card-title">🏆 Durstigste Personen</div>
+        ${topDurst.map((r,i) => `<div class="kpi-row"><span class="kpi-name"><span class="kpi-medal">${medals[i]}</span>${esc(r.vorname)} ${esc(r.nachname)}</span><span class="kpi-val">${r.bier||0} 🍺</span></div>`).join('') || '<div class="kpi-row"><span class="kpi-name">Keine Daten</span></div>'}
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card-title">📅 Top 3 Tage · Anmeldungen</div>
+        ${top3Anmeldungen.map((e,i) => `<div class="kpi-row"><span class="kpi-name">${medals[i]} ${e[0]}</span><span class="kpi-val">${e[1].count}</span></div>`).join('') || '<div class="kpi-row"><span class="kpi-name">Keine Daten</span></div>'}
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card-title">🍺 Top 3 Tage · Bier-Menge</div>
+        ${top3Bier.map((e,i) => `<div class="kpi-row"><span class="kpi-name">${medals[i]} ${e[0]}</span><span class="kpi-val">${e[1].bier}</span></div>`).join('') || '<div class="kpi-row"><span class="kpi-name">Keine Daten</span></div>'}
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card-title">⭐ The Topday</div>
+        ${topday ? `<div class="kpi-big"><span class="kpi-val">${topday.date}</span><span class="kpi-sub">${topday.count} Anmeldungen · ${topday.bier} 🍺</span></div>` : '<div class="kpi-row"><span class="kpi-name">Keine Daten</span></div>'}
+      </div>
+    `;
+  }
+
+  // ── Exporte ───────────────────────────────────────────
+  function getExportRows() {
+    const confirmed = allRows.filter(r => r.typ !== 'Absage');
+    return confirmed
+      .map(r => ({
+        anzahl: r.typ === 'Mit Begleitung' ? 2 : 1,
+        name: `${r.vorname||''} ${r.nachname||''}`.trim(),
+        gast: r.typ === 'Mit Begleitung' ? `${r.b_vorname||''} ${r.b_nachname||''}`.trim() : '',
+        kommentar: r.kommentar || '',
+        nachname: r.nachname || '',
+      }))
+      .sort((a,b) => a.nachname.localeCompare(b.nachname, 'de-CH'));
+  }
+
+  function exportXLS() {
+    const rows = getExportRows();
+    const data = [['Anzahl', 'Name', 'Gast', 'Kommentar'], ...rows.map(r => [r.anzahl, r.name, r.gast, r.kommentar])];
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    ws['!cols'] = [{wch:8},{wch:26},{wch:26},{wch:36}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Gästeliste');
+    XLSX.writeFile(wb, 'Gaesteliste.xlsx');
+  }
+
+  function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const rows = getExportRows();
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('Gästeliste – 30 Jahre Philipp G.', 14, 16);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('26. September 2026 · Lindenhofkeller', 14, 22);
+
+    const body = [];
+    rows.forEach(r => {
+      if (r.gast) {
+        body.push([String(r.anzahl), r.name, r.gast, r.kommentar, '[ ]', '[ ]']);
+      } else {
+        body.push([String(r.anzahl), r.name, r.gast, r.kommentar, '[ ]', '']);
+      }
+    });
+    // 20 empty rows for walk-ins
+    for (let i = 0; i < 20; i++) body.push(['', '', '', '', '[ ]', '']);
+
+    doc.autoTable({
+      startY: 28,
+      head: [['#', 'Name', 'Gast', 'Kommentar', 'Angek.', 'Gast']],
+      body: body,
+      styles: { font: 'helvetica', fontSize: 9, cellPadding: 2.2 },
+      headStyles: { fillColor: [122, 82, 32], textColor: 255 },
+      columnStyles: {
+        0: { cellWidth: 10, halign: 'center' },
+        1: { cellWidth: 42 },
+        2: { cellWidth: 42 },
+        3: { cellWidth: 'auto' },
+        4: { cellWidth: 16, halign: 'center', fontStyle: 'bold' },
+        5: { cellWidth: 16, halign: 'center', fontStyle: 'bold' },
+      },
+      didParseCell: function(data) {
+        if ((data.column.index === 4 || data.column.index === 5) && data.section === 'body') {
+          data.cell.text = data.cell.text.map(t => t === '[ ]' ? '☐' : t);
+        }
+      },
+    });
+
+    doc.save('Gaesteliste_Tuersteher.pdf');
+  }
 </script>
-<div class="version-tag">CLv0.034</div>
+<div class="version-tag">CLv0.035</div>
 </body>
 </html>
