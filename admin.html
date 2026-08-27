@@ -351,7 +351,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.037</span>
+      <span class="topbar-version">CLv0.038</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -1039,7 +1039,13 @@
 
     const body = [];
     rows.forEach(r => body.push(buildRow(r)));
-    // 20 empty rows for walk-ins
+    // Section heading + 20 empty rows for walk-ins
+    const colCount = includeKommentar ? 6 : 5;
+    body.push([{
+      content: 'Clowns, die sich nicht angemeldet haben',
+      colSpan: colCount,
+      styles: { fontStyle: 'bold', fillColor: [243, 227, 195], textColor: [122, 82, 32], halign: 'left', fontSize: 9.5 }
+    }]);
     for (let i = 0; i < 20; i++) body.push(buildRow({}));
 
     const columnStyles = includeKommentar ? {
@@ -1086,6 +1092,6 @@
     doc.save('Gaesteliste_Tuersteher.pdf');
   }
 </script>
-<div class="version-tag">CLv0.037</div>
+<div class="version-tag">CLv0.038</div>
 </body>
 </html>
