@@ -351,7 +351,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.035</span>
+      <span class="topbar-version">CLv0.036</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -826,10 +826,22 @@
 
   function parseDateKey(ts) {
     if (!ts) return null;
+    // Try dd.mm.yyyy pattern first (client-generated toLocaleString('de-CH') strings)
     const m = String(ts).match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
-    if (!m) return null;
-    const [, d, mo, y] = m;
-    return { key: `${d.padStart(2,'0')}.${mo.padStart(2,'0')}.${y}`, sortVal: new Date(+y, +mo - 1, +d).getTime() };
+    if (m) {
+      const [, d, mo, y] = m;
+      return { key: `${d.padStart(2,'0')}.${mo.padStart(2,'0')}.${y}`, sortVal: new Date(+y, +mo - 1, +d).getTime() };
+    }
+    // Fallback: Google Sheets sometimes auto-converts the cell to a real Date,
+    // which comes back as a full date string (e.g. "Mon Aug 03 2026 20:33:16 GMT+0200 …")
+    const d2 = new Date(ts);
+    if (!isNaN(d2)) {
+      const dd = String(d2.getDate()).padStart(2,'0');
+      const mm = String(d2.getMonth()+1).padStart(2,'0');
+      const yy = d2.getFullYear();
+      return { key: `${dd}.${mm}.${yy}`, sortVal: new Date(yy, d2.getMonth(), d2.getDate()).getTime() };
+    }
+    return null;
   }
 
   function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
@@ -1023,6 +1035,6 @@
     doc.save('Gaesteliste_Tuersteher.pdf');
   }
 </script>
-<div class="version-tag">CLv0.035</div>
+<div class="version-tag">CLv0.036</div>
 </body>
 </html>
