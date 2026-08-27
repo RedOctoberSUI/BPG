@@ -351,7 +351,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.040</span>
+      <span class="topbar-version">CLv0.041</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -581,6 +581,17 @@
   }
 
   // ── Stats ─────────────────────────────────────────────
+  function parseFullDateTime(ts) {
+    if (!ts) return 0;
+    const m = String(ts).match(/(\d{1,2})\.(\d{1,2})\.(\d{4}),?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if (m) {
+      const [, d, mo, y, h, mi, s] = m;
+      return new Date(+y, +mo - 1, +d, +h, +mi, +(s || 0)).getTime();
+    }
+    const d2 = new Date(ts);
+    return isNaN(d2) ? 0 : d2.getTime();
+  }
+
   function renderStats(filteredRows) {
     const anmeldungen = allRows.filter(r => r.typ !== 'Absage');
     const total      = anmeldungen.length;
@@ -593,6 +604,12 @@
     const bierTotal  = bierRows.reduce((sum, r) => sum + (parseInt(r.bier) || 0), 0);
     const bierLabel  = filteredRows ? `🍺 Bier (${document.getElementById('filter-typ').value || 'Alle'})` : '🍺 Bier total';
     const bierAvg    = bierRows.length ? (bierTotal / bierRows.length).toFixed(1) : '0';
+    let buuMan = '–';
+    if (anmeldungen.length) {
+      const last = anmeldungen.reduce((latest, r) =>
+        parseFullDateTime(r.timestamp) > parseFullDateTime(latest.timestamp) ? r : latest, anmeldungen[0]);
+      buuMan = `${last.vorname || ''} ${last.nachname || ''}`.trim() || '–';
+    }
     document.getElementById('count-badge').textContent = total;
     document.getElementById('stats-bar').innerHTML = `
       <div class="stat-card"><div class="stat-label">Anmeldungen</div><div class="stat-val">${total}</div></div>
@@ -602,6 +619,7 @@
       <div class="stat-card" style="border-color:rgba(201,169,110,0.4)"><div class="stat-label" style="color:var(--gold)">${bierLabel}</div><div class="stat-val" style="color:var(--gold)">${bierTotal}</div></div>
       <div class="stat-card" style="border-color:rgba(201,169,110,0.4)"><div class="stat-label" style="color:var(--gold)">Ø Bier / Person</div><div class="stat-val" style="color:var(--gold)">${bierAvg}</div></div>
       <div class="stat-card" style="border-color:#f5c6c6"><div class="stat-label" style="color:#c0392b">Absagen</div><div class="stat-val" style="color:#c0392b">${absagen}</div></div>
+      <div class="stat-card" style="border-color:rgba(201,169,110,0.4)"><div class="stat-label" style="color:var(--gold)">🤡 The Buu Man</div><div class="stat-val" style="color:var(--gold); font-size:1.3rem;">${esc(buuMan)}</div></div>
     `;
   }
 
@@ -1101,6 +1119,6 @@
     doc.save('Gaesteliste_Tuersteher.pdf');
   }
 </script>
-<div class="version-tag">CLv0.040</div>
+<div class="version-tag">CLv0.041</div>
 </body>
 </html>
