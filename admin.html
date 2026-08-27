@@ -351,7 +351,7 @@
     <div class="topbar-left">
       <span class="topbar-title">Anmeldungen</span>
       <span class="topbar-badge" id="count-badge">–</span>
-      <span class="topbar-version">CLv0.038</span>
+      <span class="topbar-version">CLv0.039</span>
     </div>
     <div class="topbar-actions">
       <a id="sheet-link" href="https://docs.google.com/spreadsheets/d/1BLJSVqF2s-WJ8pZvKQyPxYSimrxOjQrVOFZJDHKE8p0/edit" target="_blank" class="icon-btn">📄 Sheet</a>
@@ -441,9 +441,16 @@
             Gleiche Liste, mit Checkboxen zum Ankreuzen (2 Boxen bei Begleitung).
             Zusätzlich 20 leere Zeilen am Ende für spontane Gäste.
           </div>
-          <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; cursor:pointer; font-size:0.85rem; color:var(--ink);">
+          <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem; cursor:pointer; font-size:0.85rem; color:var(--ink);">
             <input type="checkbox" id="pdf-include-kommentar" checked style="width:16px; height:16px; accent-color:var(--gold); cursor:pointer;" />
             Kommentar-Spalte einschliessen
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; font-size:0.85rem; color:var(--ink);">
+            Sortieren nach:
+            <select id="pdf-sort-by" style="width:auto; padding:0.35rem 0.6rem; font-size:0.82rem;">
+              <option value="nachname">Nachname</option>
+              <option value="vorname">Vorname</option>
+            </select>
           </label>
           <button class="export-btn" onclick="exportPDF()">⬇ Als .pdf herunterladen</button>
         </div>
@@ -985,17 +992,19 @@
   }
 
   // ── Exporte ───────────────────────────────────────────
-  function getExportRows() {
+  function getExportRows(sortBy) {
     const confirmed = allRows.filter(r => r.typ !== 'Absage');
-    return confirmed
+    const rows = confirmed
       .map(r => ({
         anzahl: r.typ === 'Mit Begleitung' ? 2 : 1,
         name: `${r.vorname||''} ${r.nachname||''}`.trim(),
         gast: r.typ === 'Mit Begleitung' ? `${r.b_vorname||''} ${r.b_nachname||''}`.trim() : '',
         kommentar: r.kommentar || '',
+        vorname: r.vorname || '',
         nachname: r.nachname || '',
-      }))
-      .sort((a,b) => a.nachname.localeCompare(b.nachname, 'de-CH'));
+      }));
+    const key = sortBy === 'vorname' ? 'vorname' : 'nachname';
+    return rows.sort((a,b) => a[key].localeCompare(b[key], 'de-CH'));
   }
 
   function exportXLS() {
@@ -1011,8 +1020,9 @@
   function exportPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const rows = getExportRows();
     const includeKommentar = document.getElementById('pdf-include-kommentar').checked;
+    const sortBy = document.getElementById('pdf-sort-by').value;
+    const rows = getExportRows(sortBy);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
@@ -1092,6 +1102,6 @@
     doc.save('Gaesteliste_Tuersteher.pdf');
   }
 </script>
-<div class="version-tag">CLv0.038</div>
+<div class="version-tag">CLv0.039</div>
 </body>
 </html>
